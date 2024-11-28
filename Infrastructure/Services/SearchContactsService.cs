@@ -1,20 +1,20 @@
-﻿using Infrastructure.Interfaces;
+﻿using Infrastructure.Factories;
+using Infrastructure.Interfaces;
 using Infrastructure.Models;
-using Infrastructure.Repositories;
 using Microsoft.ML;
-using System.Collections.ObjectModel;
+using Microsoft.ML.Transforms.Text;
 using System.Collections.Specialized;
+using System.Numerics.Tensors;
 
 namespace Infrastructure.Services;
 
 public class SearchContactsService
 {
-    MLContext mlContext = new();
     IRepository<IContact> _contactRepository;
 
+    MLContext mlContext = new();
     List<SearchableContact> _contactsList = [];
     ITransformer _transformer = null!;
-
     public SearchContactsService(IRepository<IContact> contactRepository)
     {
         _contactRepository = contactRepository;
@@ -37,18 +37,26 @@ public class SearchContactsService
         _transformer = pipeline.Fit(contactView);
     }
 
-    public void Search()
+    public IEnumerable<IContact> SearchContact(string searchTerm)
     {
-        List<SearchText> searchData = [new SearchText { SearchTerm = "Alice" }];
+        // Transform Searchterm to get the features
+        List<SearchText> searchData = [new SearchText { SearchTerm = searchTerm }];
         var searchView = mlContext.Data.LoadFromEnumerable(searchData);
         var transformedSerach = _transformer.Transform(searchView);
         IEnumerable<TransformedSearchText> transformedSearchEnumerable = mlContext.Data.CreateEnumerable<TransformedSearchText>(transformedSerach, reuseRowObject: false);
         float[] searchTermFeatures = transformedSearchEnumerable.First().Features;
-        Console.WriteLine(searchTermFeatures.Count());
 
+        // Transform Contact list to get the features
         var contactView = mlContext.Data.LoadFromEnumerable(_contactsList);
         var transfomredContacts = _transformer.Transform(contactView);
         IEnumerable<TransformedSearchableContact> transformedContactsEnumerable = mlContext.Data.CreateEnumerable<TransformedSearchableContact>(transfomredContacts, reuseRowObject: false);
+        
+        var listOfSimilarContacts = transformedContactsEnumerable
+            .OrderByDescending(x => TensorPrimitives.CosineSimilarity(x.Features, searchTermFeatures))
+            .Where(x => TensorPrimitives.CosineSimilarity(x.Features, searchTermFeatures) > 0)
+            .ToList();
 
+        IEnumerable<IContact> EnumerableOfSimilarContacts = listOfSimilarContacts;
+        return EnumerableOfSimilarContacts;
     }
 }

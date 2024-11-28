@@ -6,6 +6,7 @@ namespace Infrastructure.Repositories;
 public abstract class BaseRepository<TEntity> : IRepository<TEntity> where TEntity : class
 {
     public ObservableCollection<TEntity> Entities { get; set; } = [];
+
     IJsonService<TEntity> _jsonService;
     IFileService _fileService;
     string _storageFileName;

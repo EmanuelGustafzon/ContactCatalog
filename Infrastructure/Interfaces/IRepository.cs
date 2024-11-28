@@ -1,6 +1,9 @@
-﻿namespace Infrastructure.Interfaces;
+﻿using System.Collections.ObjectModel;
+
+namespace Infrastructure.Interfaces;
 public interface IRepository<TEntity> where TEntity : class
 {
+    public ObservableCollection<TEntity> Entities { get; set; }
     public int Add(TEntity entity);
     public IEnumerable<TEntity> Get();
     public TEntity? Get(string id);

@@ -4,9 +4,9 @@ using Infrastructure.Repositories;
 namespace Infrastructure.Services;
 public class ContactService : IContactService
 {
-    ContactRepository _contactRepository;
+    IRepository<IContact> _contactRepository;
 
-    public ContactService(ContactRepository contactRepository)
+    public ContactService(IRepository<IContact> contactRepository)
     {
         _contactRepository = contactRepository;
     }
