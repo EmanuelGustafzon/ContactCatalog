@@ -1,5 +1,7 @@
-﻿using Infrastructure.Interfaces;
-using Infrastructure.Repositories;
+﻿using Infrastructure.Factories;
+using Infrastructure.Interfaces;
+using System.Collections.Specialized;
+using System.ComponentModel;
 
 namespace Infrastructure.Services;
 public class ContactService : IContactService
@@ -9,6 +11,7 @@ public class ContactService : IContactService
     public ContactService(IRepository<IContact> contactRepository)
     {
         _contactRepository = contactRepository;
+        _contactRepository.Entities.CollectionChanged += SaveChanges;
     }
     public IEnumerable<IContact> GetAll()
     {
@@ -21,25 +24,26 @@ public class ContactService : IContactService
     }
     public void Add(IContact contact)
     {
-        foreach (var item in GetAll())
-        {
-            if (item.Name == contact.Name && item.Lastname == contact.Lastname) return;
-        }
-        _contactRepository.Add(contact);
+        if (GetAll().Any(item => item.Name == contact.Name && item.Lastname == contact.Lastname))
+            return;
+
+        IObservableContact observableContact = ContactFactory.CreateObservable(contact);
+        observableContact.PropertyChanged += SaveChanges;
+        _contactRepository.Add(observableContact);
     }
     public void Update(string id, IContact contact)
     {
-        foreach (var item in GetAll())
-        {
-            if (item.Name == contact.Name && item.Lastname == contact.Lastname) return;
-        }
         _contactRepository.Update(id, contact);
     }
     public void Delete(string id)
     {
         _contactRepository.Delete(id);
     }
-    public void SaveChanges()
+    private void SaveChanges(object? sender, PropertyChangedEventArgs e)
+    {
+        _contactRepository.SaveChanges();
+    }
+    private void SaveChanges(object? sender, NotifyCollectionChangedEventArgs e)
     {
         _contactRepository.SaveChanges();
     }

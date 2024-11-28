@@ -12,6 +12,20 @@ public static class ContactFactory
     {
         return new Contact { Name = name, Lastname = lastname, Email = email, Phone = phone, Address = address, Postcode = postcode, City = city };
     }
+    public static IObservableContact CreateObservable(IContact contact)
+    {
+        return new ObservableContact
+        {
+            ID = contact.ID,
+            Name = contact.Name,
+            Lastname = contact.Lastname,
+            Email = contact.Email,
+            Phone = contact.Phone,
+            Address = contact.Address,
+            Postcode = contact.Postcode,
+            City = contact.City,
+        };
+    }
     internal static SearchableContact CreateSearchable(IContact contact) 
     {
         SearchableContact searchableContact = new();

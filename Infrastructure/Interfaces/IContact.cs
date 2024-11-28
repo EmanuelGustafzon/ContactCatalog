@@ -5,6 +5,7 @@ using System.Text.Json.Serialization;
 namespace Infrastructure.Interfaces;
 
 [JsonDerivedType(typeof(Contact), nameof(Contact))]
+[JsonDerivedType(typeof(ObservableContact), nameof(ObservableContact))]
 public interface IContact
 {
     string ID { get; set; }
