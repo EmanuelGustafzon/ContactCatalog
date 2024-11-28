@@ -6,11 +6,13 @@ using Infrastructure.Services;
 
 Console.WriteLine("Hello, World!");
 
-IContact Ben = ContactFactory.Create("Emanuel", "Larsson", "email", "Phone", "address", "Postcode", "City");
+IContact Alice = ContactFactory.Create("Alice", "Larsson", "email", "Phone", "address", "Postcode", "City");
 IJsonService<IContact> jsonService = new JsonService<IContact>();
 IFileService fileService = new FileService(@"C:\Users\Emanuel");
-var repo = new ContactRepository(jsonService, fileService, "Contacts.json");
-var service = new ContactService(repo);
+IRepository<IContact> repo = new ContactRepository(jsonService, fileService, "Contacts.json");
+IContactService service = new ContactService(repo);
 
-service.Add(Ben);
-service.SaveChanges();
+
+SearchContactsService search = new(repo);
+service.Add(Alice);
+

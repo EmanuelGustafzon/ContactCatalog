@@ -10,26 +10,45 @@ namespace Infrastructure.Services;
 public class SearchContactsService
 {
     MLContext mlContext = new();
-    ContactRepository _contactRepository;
-    IEnumerable<TransformedContact> TransformedContactList { get; set; }
+    IRepository<IContact> _contactRepository;
 
-    public SearchContactsService(ContactRepository contactRepository)
+    List<SearchableContact> _contactsList = [];
+    ITransformer _transformer = null!;
+
+    public SearchContactsService(IRepository<IContact> contactRepository)
     {
         _contactRepository = contactRepository;
         _contactRepository.Entities.CollectionChanged += ContactListChanged;
     }
-    public void TransformProductList()
+    void ContactListChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
-        var contactsDataview = mlContext.Data.LoadFromEnumerable(_contactRepository.Get());
-        var contactsPipeline = mlContext.Transforms.Concatenate("Features", "Name", "Lastname")
-            .Append(mlContext.Transforms.Text.FeaturizeText("Features"));
-        var contactTransformer = contactsPipeline.Fit(contactsDataview);
-
-        var transformedContactsDataview = contactTransformer.Transform(contactsDataview);
-        TransformedContactList = mlContext.Data.CreateEnumerable<TransformedContact>(transformedContactsDataview, reuseRowObject: false);
+        _contactsList = [];
+        foreach (var item in _contactRepository.Get())
+        {
+            _contactsList.Add(ContactFactory.CreateSearchable(item));
+        }
+        BuildPipeLine();
     }
-    public void ContactListChanged(object? sender, NotifyCollectionChangedEventArgs e)
+
+    private void BuildPipeLine()
     {
-        TransformProductList();
+        var contactView = mlContext.Data.LoadFromEnumerable(_contactsList);
+        TextFeaturizingEstimator pipeline = mlContext.Transforms.Text.FeaturizeText("Features", "SearchTerm");
+        _transformer = pipeline.Fit(contactView);
+    }
+
+    public void Search()
+    {
+        List<SearchText> searchData = [new SearchText { SearchTerm = "Alice" }];
+        var searchView = mlContext.Data.LoadFromEnumerable(searchData);
+        var transformedSerach = _transformer.Transform(searchView);
+        IEnumerable<TransformedSearchText> transformedSearchEnumerable = mlContext.Data.CreateEnumerable<TransformedSearchText>(transformedSerach, reuseRowObject: false);
+        float[] searchTermFeatures = transformedSearchEnumerable.First().Features;
+        Console.WriteLine(searchTermFeatures.Count());
+
+        var contactView = mlContext.Data.LoadFromEnumerable(_contactsList);
+        var transfomredContacts = _transformer.Transform(contactView);
+        IEnumerable<TransformedSearchableContact> transformedContactsEnumerable = mlContext.Data.CreateEnumerable<TransformedSearchableContact>(transfomredContacts, reuseRowObject: false);
+
     }
 }
