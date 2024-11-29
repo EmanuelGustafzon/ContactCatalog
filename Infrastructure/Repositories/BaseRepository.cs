@@ -1,6 +1,7 @@
 ﻿using Infrastructure.Interfaces;
 using Infrastructure.Models.Enums;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 
 namespace Infrastructure.Repositories;
 public abstract class BaseRepository<TEntity> : IRepository<TEntity> where TEntity : class
@@ -15,7 +16,6 @@ public abstract class BaseRepository<TEntity> : IRepository<TEntity> where TEnti
         _jsonService = jsonService;
         _fileService = fileService;
         _storageFileName = storageFileName;
-        PopulateListFromFile(storageFileName);
     }
     public virtual int Add(TEntity entity)
     {
@@ -26,11 +26,14 @@ public abstract class BaseRepository<TEntity> : IRepository<TEntity> where TEnti
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            Debug.WriteLine(ex.Message);
             return (int)StatusCodes.InternalError;
         }
     }
-    public virtual IEnumerable<TEntity> Get() => Entities;
+    public virtual IEnumerable<TEntity> Get()
+    {
+        return Entities;
+    }
     public abstract TEntity? Get(string id);
     public abstract int Delete(string id);
     public abstract int Update(string id, TEntity entity);
@@ -44,18 +47,17 @@ public abstract class BaseRepository<TEntity> : IRepository<TEntity> where TEnti
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            Debug.WriteLine(ex.Message);
             return (int)StatusCodes.InternalError;
         }
     }
-    private void PopulateListFromFile(string fileName)
+    public void PopulateListFromFile()
     {
         try
         {
-            if (!_fileService.FileExist(fileName)) return;
+            if (!_fileService.FileExist(_storageFileName)) return;
 
-            var json = _fileService.ReadFile(fileName);
-            if (json == null) return;
+            var json = _fileService.ReadFile(_storageFileName);
             ObservableCollection<TEntity>? items = _jsonService.Deserialize(json);
             if (items == null) return;
             foreach (var item in items)
@@ -65,7 +67,7 @@ public abstract class BaseRepository<TEntity> : IRepository<TEntity> where TEnti
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            Debug.WriteLine(ex.Message);
         }
     }
 }

@@ -10,4 +10,6 @@ public interface IRepository<TEntity> where TEntity : class
     public int Delete(string id);
     public int Update(string id, TEntity entity);
     public int SaveChanges();
+
+    public void PopulateListFromFile();
 }

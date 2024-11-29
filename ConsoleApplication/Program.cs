@@ -16,7 +16,8 @@ IFileService fileService = new FileService(@"C:\Users\Emanuel");
 IRepository<IContact> repo = new ContactRepository(jsonService, fileService, "Contacts.json");
 IContactService service = new ContactService(repo);
 
-service.Update(Anna.ID, Ann);
-IContact? c = service.GetByID(Anna.ID);
-Console.WriteLine(c?.Name);
+service.GetAll();
+service.Delete("05513935-2dda-4658-b5a3-67755d010232");
+service.Add(annaLisa);
+service.Update(annaLisa.ID, Ann);
 

@@ -11,11 +11,13 @@ public class ContactService : IContactService
     public ContactService(IRepository<IContact> contactRepository)
     {
         _contactRepository = contactRepository;
-        _contactRepository.Entities.CollectionChanged += SaveChanges;
+        _contactRepository.Entities.CollectionChanged += CollectionChanged;
     }
     public IEnumerable<IContact> GetAll()
     {
-        return _contactRepository.Get();
+        IEnumerable<IContact> allContacts = _contactRepository.Get();
+        if (allContacts.Count() == 0) PopulateListFromFile();
+        return allContacts;
     }
     public IContact? GetByID(string id)
     {
@@ -24,11 +26,13 @@ public class ContactService : IContactService
     }
     public void Add(IContact contact)
     {
-        if (GetAll().Any(item => item.Name == contact.Name && item.Lastname == contact.Lastname))
+        IEnumerable<IContact> allContacts = _contactRepository.Get();
+        if (allContacts.Count() == 0) PopulateListFromFile();
+        if (allContacts.Any(item => item.Name == contact.Name && item.Lastname == contact.Lastname))
             return;
 
         IObservableContact observableContact = ContactFactory.CreateObservable(contact);
-        observableContact.PropertyChanged += SaveChanges;
+        observableContact.PropertyChanged += CollectionPropertyChanged;
         _contactRepository.Add(observableContact);
     }
     public void Update(string id, IContact contact)
@@ -39,11 +43,16 @@ public class ContactService : IContactService
     {
         _contactRepository.Delete(id);
     }
-    private void SaveChanges(object? sender, PropertyChangedEventArgs e)
+
+    private void PopulateListFromFile()
+    {
+        _contactRepository.PopulateListFromFile();
+    }
+    private void CollectionPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         _contactRepository.SaveChanges();
     }
-    private void SaveChanges(object? sender, NotifyCollectionChangedEventArgs e)
+    private void CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
         _contactRepository.SaveChanges();
     }
