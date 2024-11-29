@@ -37,6 +37,9 @@ public class ContactService : IContactService
     }
     public void Update(string id, IContact contact)
     {
+        IEnumerable<IContact> allContacts = _contactRepository.Get();
+        if (allContacts.Any(item => item.ID == id && item.Name == contact.Name && item.Lastname == contact.Lastname))
+            return;
         _contactRepository.Update(id, contact);
     }
     public void Delete(string id)

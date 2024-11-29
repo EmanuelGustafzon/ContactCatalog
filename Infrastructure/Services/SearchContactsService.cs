@@ -3,11 +3,9 @@ using Infrastructure.Interfaces;
 using Infrastructure.Models;
 using Microsoft.ML;
 using Microsoft.ML.Transforms.Text;
-using System.Collections.Specialized;
 using System.Numerics.Tensors;
 
 namespace Infrastructure.Services;
-
 public class SearchContactsService
 {
     IRepository<IContact> _contactRepository;
@@ -18,27 +16,27 @@ public class SearchContactsService
     public SearchContactsService(IRepository<IContact> contactRepository)
     {
         _contactRepository = contactRepository;
-        _contactRepository.Entities.CollectionChanged += ContactListChanged;
     }
-    void ContactListChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    private void ConvertContacts()
     {
-        _contactsList = [];
-        foreach (var item in _contactRepository.Get())
+        _contactsList.Clear();
+        var allContacts = _contactRepository.Get();
+        foreach (var contact in allContacts)
         {
-            _contactsList.Add(ContactFactory.CreateSearchable(item));
+            _contactsList.Add(ContactFactory.CreateSearchable(contact));
         }
-        BuildPipeLine();
     }
-
     private void BuildPipeLine()
     {
         var contactView = mlContext.Data.LoadFromEnumerable(_contactsList);
         TextFeaturizingEstimator pipeline = mlContext.Transforms.Text.FeaturizeText("Features", "SearchTerm");
         _transformer = pipeline.Fit(contactView);
     }
-
     public IEnumerable<IContact> SearchContact(string searchTerm)
     {
+        ConvertContacts();
+        BuildPipeLine();
+
         // Transform Searchterm to get the features
         List<SearchText> searchData = [new SearchText { SearchTerm = searchTerm }];
         var searchView = mlContext.Data.LoadFromEnumerable(searchData);

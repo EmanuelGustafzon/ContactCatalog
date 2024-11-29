@@ -15,9 +15,11 @@ IJsonService<IContact> jsonService = new JsonService<IContact>();
 IFileService fileService = new FileService(@"C:\Users\Emanuel");
 IRepository<IContact> repo = new ContactRepository(jsonService, fileService, "Contacts.json");
 IContactService service = new ContactService(repo);
-
+SearchContactsService searchService = new(repo);
 service.GetAll();
-service.Delete("05513935-2dda-4658-b5a3-67755d010232");
-service.Add(annaLisa);
-service.Update(annaLisa.ID, Ann);
+var searchResult = searchService.SearchContact("Alice");
+foreach (var contact in searchResult)
+{
+    Console.WriteLine(contact.Name);
+}
 
