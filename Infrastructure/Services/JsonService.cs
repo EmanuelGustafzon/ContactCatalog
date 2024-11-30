@@ -12,12 +12,12 @@ public class JsonService<TEntity> : IJsonService<TEntity> where TEntity : class
         ReferenceHandler = ReferenceHandler.Preserve,
         Converters = { new JsonStringEnumConverter() }
     };
-    public ObservableCollection<TEntity>? Deserialize(string json)
+    public List<TEntity>? Deserialize(string json)
     {
-        ObservableCollection<TEntity>? deserilizedList = JsonSerializer.Deserialize<ObservableCollection<TEntity>>(json, options);
+        List<TEntity>? deserilizedList = JsonSerializer.Deserialize<List<TEntity>>(json, options);
         return deserilizedList ?? null;
     }
-    public string Serialize(ObservableCollection<TEntity> listOfObjects)
+    public string Serialize(List<TEntity> listOfObjects)
     {
         string json = JsonSerializer.Serialize(listOfObjects, options);
         return json;

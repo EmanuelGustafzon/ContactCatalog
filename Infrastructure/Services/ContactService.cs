@@ -1,9 +1,4 @@
-﻿using Infrastructure.Factories;
-using Infrastructure.Interfaces;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.ComponentModel;
+﻿using Infrastructure.Interfaces;
 
 namespace Infrastructure.Services;
 public class ContactService : IContactService
@@ -12,13 +7,6 @@ public class ContactService : IContactService
     public ContactService(IRepository<IContact> contactRepository)
     {
         _contactRepository = contactRepository;
-        _contactRepository.GetObservableCollection()
-            .CollectionChanged += CollectionChanged;
-    }
-
-    public ObservableCollection<IContact> GetObservableList()
-    {
-        return _contactRepository.GetObservableCollection();
     }
     public IEnumerable<IContact> GetAll()
     {
@@ -38,9 +26,18 @@ public class ContactService : IContactService
         if (allContacts.Any(item => item.Name == contact.Name && item.Lastname == contact.Lastname))
             return;
 
-        IObservableContact observableContact = ContactFactory.CreateObservable(contact);
-        observableContact.PropertyChanged += CollectionPropertyChanged;
-        _contactRepository.Add(observableContact);
+        _contactRepository.Add(contact);
+        SaveChanges();
+    }
+    public void AddMany(IEnumerable<IContact> listOfContacts)
+    {
+        IEnumerable<IContact> allContacts = _contactRepository.Get();
+        if (allContacts.Count() == 0) PopulateListFromFile();
+        foreach (var contact in listOfContacts)
+        {
+           _contactRepository.Add(contact);
+        }
+        SaveChanges();
     }
     public void Update(string id, IContact contact)
     {
@@ -48,22 +45,20 @@ public class ContactService : IContactService
         if (allContacts.Any(item => item.ID == id && item.Name == contact.Name && item.Lastname == contact.Lastname))
             return;
         _contactRepository.Update(id, contact);
+        SaveChanges();
     }
     public void Delete(string id)
     {
         _contactRepository.Delete(id);
+        SaveChanges();
+    }
+    private void SaveChanges()
+    {
+        _contactRepository.SaveChanges();
     }
 
     private void PopulateListFromFile()
     {
         _contactRepository.PopulateListFromFile();
-    }
-    private void CollectionPropertyChanged(object? sender, PropertyChangedEventArgs e)
-    {
-        _contactRepository.SaveChanges();
-    }
-    private void CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
-    {
-        _contactRepository.SaveChanges();
     }
 }

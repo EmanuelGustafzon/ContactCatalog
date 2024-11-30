@@ -3,6 +3,7 @@ using Infrastructure.Factories;
 using Infrastructure.Interfaces;
 using Infrastructure.Repositories;
 using Infrastructure.Services;
+using Microsoft.VisualBasic.FileIO;
 
 Console.WriteLine("Hello, World!");
 
@@ -15,9 +16,9 @@ IJsonService<IContact> jsonService = new JsonService<IContact>();
 IFileService fileService = new FileService(@"C:\Users\Emanuel");
 IRepository<IContact> repo = new ContactRepository(jsonService, fileService);
 IContactService service = new ContactService(repo);
-
-var list = service.GetAll();
-foreach(var item in list)
+SearchContactsService search = new SearchContactsService(service);
+var list = search.SearchContact("Ann");
+foreach (var item in list)
 {
     Console.WriteLine(item.Name);
 }

@@ -4,7 +4,7 @@ namespace Infrastructure.Interfaces;
 public interface IContactService
 {
     public void Add(IContact contact);
-    public ObservableCollection<IContact> GetObservableList();
+    public void AddMany(IEnumerable<IContact> listOfContacts);
     public IEnumerable<IContact> GetAll();
     public IContact? GetByID(string id);
     public void Update(string id, IContact contact);

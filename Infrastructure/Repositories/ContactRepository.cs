@@ -6,14 +6,9 @@ namespace Infrastructure.Repositories;
 
 public class ContactRepository : BaseRepository<IContact>
 {
-    public ObservableCollection<IContact> PublicEntities => Entities;
     public ContactRepository(IJsonService<IContact> jsonService, IFileService fileService)
         : base(jsonService, fileService, "Contacts.json") 
     {
-    }
-    public override ObservableCollection<IContact> GetObservableCollection()
-    {
-        return PublicEntities;
     }
     public override int Delete(string id)
     {

@@ -6,7 +6,7 @@ using System.Diagnostics;
 namespace Infrastructure.Repositories;
 public abstract class BaseRepository<TEntity> : IRepository<TEntity> where TEntity : class
 {
-    protected ObservableCollection<TEntity> Entities = [];
+    protected List<TEntity> Entities = [];
 
     IJsonService<TEntity> _jsonService;
     IFileService _fileService;
@@ -17,8 +17,6 @@ public abstract class BaseRepository<TEntity> : IRepository<TEntity> where TEnti
         _fileService = fileService;
         _storageFileName = storageFileName;
     }
-
-    public abstract ObservableCollection<TEntity> GetObservableCollection();
     public virtual int Add(TEntity entity)
     {
         try
@@ -60,7 +58,7 @@ public abstract class BaseRepository<TEntity> : IRepository<TEntity> where TEnti
             if (!_fileService.FileExist(_storageFileName)) return;
 
             var json = _fileService.ReadFile(_storageFileName);
-            ObservableCollection<TEntity>? items = _jsonService.Deserialize(json);
+            List<TEntity>? items = _jsonService.Deserialize(json);
             if (items == null) return;
             foreach (var item in items)
             {
