@@ -51,23 +51,26 @@ public abstract class BaseRepository<TEntity> : IRepository<TEntity> where TEnti
             return (int)StatusCodes.InternalError;
         }
     }
-    public void PopulateListFromFile()
+    public int PopulateListFromFile()
     {
         try
         {
-            if (!_fileService.FileExist(_storageFileName)) return;
-
             var json = _fileService.ReadFile(_storageFileName);
             List<TEntity>? items = _jsonService.Deserialize(json);
-            if (items == null) return;
+            if (items == null)
+            {
+                return (int)StatusCodes.NotFound;
+            }
             foreach (var item in items)
             {
                 Entities.Add(item);
             }
+            return (int)StatusCodes.OK;
         }
         catch (Exception ex)
         {
             Debug.WriteLine(ex.Message);
+            return (int)StatusCodes.InternalError;
         }
     }
 }

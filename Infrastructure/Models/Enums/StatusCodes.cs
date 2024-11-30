@@ -5,5 +5,6 @@ internal enum StatusCodes
     Created = 201,
     NotFound = 404,
     BadRequest = 400,
+    Duplicate = 409,
     InternalError = 500
 }

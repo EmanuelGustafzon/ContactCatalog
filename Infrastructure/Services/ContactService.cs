@@ -1,4 +1,6 @@
 ﻿using Infrastructure.Interfaces;
+using Infrastructure.Models.Enums;
+using System.Diagnostics;
 
 namespace Infrastructure.Services;
 public class ContactService : IContactService
@@ -12,24 +14,25 @@ public class ContactService : IContactService
     {
         IEnumerable<IContact> allContacts = _contactRepository.Get();
         if (allContacts.Count() == 0) PopulateListFromFile();
-        return allContacts;
+        return allContacts;   
     }
     public IContact? GetByID(string id)
     {
         var foundContact = _contactRepository.Get(id);
         return foundContact ?? null;
     }
-    public void Add(IContact contact)
+    public int Add(IContact contact)
     {
         IEnumerable<IContact> allContacts = _contactRepository.Get();
         if (allContacts.Count() == 0) PopulateListFromFile();
         if (allContacts.Any(item => item.Name == contact.Name && item.Lastname == contact.Lastname))
-            return;
+            return (int)StatusCodes.Duplicate;
 
         _contactRepository.Add(contact);
         SaveChanges();
+        return (int)StatusCodes.OK;
     }
-    public void AddMany(IEnumerable<IContact> listOfContacts)
+    public int AddMany(IEnumerable<IContact> listOfContacts)
     {
         IEnumerable<IContact> allContacts = _contactRepository.Get();
         if (allContacts.Count() == 0) PopulateListFromFile();
@@ -38,19 +41,24 @@ public class ContactService : IContactService
            _contactRepository.Add(contact);
         }
         SaveChanges();
+        return (int)StatusCodes.OK;
     }
-    public void Update(string id, IContact contact)
+    public int Update(string id, IContact contact)
     {
         IEnumerable<IContact> allContacts = _contactRepository.Get();
         if (allContacts.Any(item => item.ID == id && item.Name == contact.Name && item.Lastname == contact.Lastname))
-            return;
+            return (int)StatusCodes.Duplicate;
+        if (GetByID(id) != null) return (int)StatusCodes.BadRequest;
         _contactRepository.Update(id, contact);
         SaveChanges();
+        return (int)StatusCodes.OK;
     }
-    public void Delete(string id)
+    public int Delete(string id)
     {
+        if (GetByID(id) != null) return (int)StatusCodes.BadRequest;
         _contactRepository.Delete(id);
         SaveChanges();
+        return (int)StatusCodes.OK;
     }
     private void SaveChanges()
     {
