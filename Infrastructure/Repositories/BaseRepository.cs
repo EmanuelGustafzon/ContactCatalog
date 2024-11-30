@@ -6,7 +6,7 @@ using System.Diagnostics;
 namespace Infrastructure.Repositories;
 public abstract class BaseRepository<TEntity> : IRepository<TEntity> where TEntity : class
 {
-    public ObservableCollection<TEntity> Entities { get; set; } = [];
+    protected ObservableCollection<TEntity> Entities = [];
 
     IJsonService<TEntity> _jsonService;
     IFileService _fileService;
@@ -17,6 +17,8 @@ public abstract class BaseRepository<TEntity> : IRepository<TEntity> where TEnti
         _fileService = fileService;
         _storageFileName = storageFileName;
     }
+
+    public abstract ObservableCollection<TEntity> GetObservableCollection();
     public virtual int Add(TEntity entity)
     {
         try

@@ -3,7 +3,7 @@
 namespace Infrastructure.Interfaces;
 public interface IRepository<TEntity> where TEntity : class
 {
-    public ObservableCollection<TEntity> Entities { get; set; }
+    public ObservableCollection<TEntity> GetObservableCollection();
     public int Add(TEntity entity);
     public IEnumerable<TEntity> Get();
     public TEntity? Get(string id);

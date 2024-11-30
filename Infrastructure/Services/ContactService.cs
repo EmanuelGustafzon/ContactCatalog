@@ -1,5 +1,7 @@
 ﻿using Infrastructure.Factories;
 using Infrastructure.Interfaces;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 
@@ -7,11 +9,16 @@ namespace Infrastructure.Services;
 public class ContactService : IContactService
 {
     IRepository<IContact> _contactRepository;
-
     public ContactService(IRepository<IContact> contactRepository)
     {
         _contactRepository = contactRepository;
-        _contactRepository.Entities.CollectionChanged += CollectionChanged;
+        _contactRepository.GetObservableCollection()
+            .CollectionChanged += CollectionChanged;
+    }
+
+    public ObservableCollection<IContact> GetObservableList()
+    {
+        return _contactRepository.GetObservableCollection();
     }
     public IEnumerable<IContact> GetAll()
     {

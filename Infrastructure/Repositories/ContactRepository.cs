@@ -1,12 +1,20 @@
 ﻿using Infrastructure.Interfaces;
 using Infrastructure.Models.Enums;
+using System.Collections.ObjectModel;
 
 namespace Infrastructure.Repositories;
 
 public class ContactRepository : BaseRepository<IContact>
 {
-    public ContactRepository(IJsonService<IContact> jsonService, IFileService fileService, string filePath)
-        : base(jsonService, fileService, filePath) {}
+    public ObservableCollection<IContact> PublicEntities => Entities;
+    public ContactRepository(IJsonService<IContact> jsonService, IFileService fileService)
+        : base(jsonService, fileService, "Contacts.json") 
+    {
+    }
+    public override ObservableCollection<IContact> GetObservableCollection()
+    {
+        return PublicEntities;
+    }
     public override int Delete(string id)
     {
         try

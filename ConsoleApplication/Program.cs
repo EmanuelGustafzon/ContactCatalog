@@ -13,13 +13,13 @@ IContact annaLisa = ContactFactory.Create("Anna-Lisa", "Hansson", "email", "Phon
 
 IJsonService<IContact> jsonService = new JsonService<IContact>();
 IFileService fileService = new FileService(@"C:\Users\Emanuel");
-IRepository<IContact> repo = new ContactRepository(jsonService, fileService, "Contacts.json");
+IRepository<IContact> repo = new ContactRepository(jsonService, fileService);
 IContactService service = new ContactService(repo);
-SearchContactsService searchService = new(service);
 
-var searchResult = searchService.SearchContact("Dani");
-foreach (var contact in searchResult)
+var list = service.GetAll();
+foreach(var item in list)
 {
-    Console.WriteLine(contact.Name);
+    Console.WriteLine(item.Name);
 }
+
 
