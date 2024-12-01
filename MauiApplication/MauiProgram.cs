@@ -21,7 +21,7 @@ namespace MauiApplication
 #if DEBUG
     		builder.Logging.AddDebug();
             builder.Services.AddSingleton<IJsonService<IContact>, JsonService<IContact>>();
-            builder.Services.AddSingleton<IFileService, FileService>(provicer => 
+            builder.Services.AddSingleton<IFileService, FileService>(provider => 
                 new FileService(@"C:\Users\Emanuel"));
             builder.Services.AddSingleton<IRepository<IContact>, ContactRepository>();
             builder.Services.AddSingleton<IContactService, ContactService>();

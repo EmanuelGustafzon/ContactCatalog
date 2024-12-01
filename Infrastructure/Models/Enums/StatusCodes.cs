@@ -1,5 +1,5 @@
 ﻿namespace Infrastructure.Models.Enums;
-internal enum StatusCodes
+public enum StatusCodes
 {
     OK = 200,
     Created = 201,

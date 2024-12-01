@@ -7,7 +7,7 @@ using System.Diagnostics;
 using System.Numerics.Tensors;
 
 namespace Infrastructure.Services;
-public class SearchContactsService
+public class SearchContactsService : ISearchContactsService
 {
     IContactService _contactService;
 

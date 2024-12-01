@@ -3,18 +3,18 @@
 namespace Infrastructure.Services;
 public class FileService : IFileService
 {
-    string _filePath;
+    string _defaultFilePath;
 
     public FileService(string filePath)
     {
-        _filePath = filePath;
+        _defaultFilePath = filePath;
     }
 
     public string ReadFile(string fileName)
     {
         try
         {
-            using StreamReader reader = new(Path.Combine(_filePath, fileName));
+            using StreamReader reader = new(Path.Combine(_defaultFilePath, fileName));
             string text = reader.ReadToEnd();
             return text;
         }
@@ -29,7 +29,20 @@ public class FileService : IFileService
     {
         try
         {
-            using StreamWriter outputFile = new StreamWriter(Path.Combine(_filePath, fileName));
+            using StreamWriter outputFile = new StreamWriter(Path.Combine(_defaultFilePath, fileName));
+            outputFile.WriteLine(content);
+        }
+        catch (IOException e)
+        {
+            Console.WriteLine("Could not write to file:");
+            Console.WriteLine(e.Message);
+        }
+    }
+    public void WriteFile(string content, string customFilePath, string fileName)
+    {
+        try
+        {
+            using StreamWriter outputFile = new StreamWriter(Path.Combine(customFilePath, fileName));
             outputFile.WriteLine(content);
         }
         catch (IOException e)
@@ -40,6 +53,6 @@ public class FileService : IFileService
     }
     public bool FileExist(string fileName)
     {
-        return File.Exists(Path.Combine(_filePath, fileName));
+        return File.Exists(Path.Combine(_defaultFilePath, fileName));
     }
 }

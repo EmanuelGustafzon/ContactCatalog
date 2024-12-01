@@ -17,10 +17,10 @@ IFileService fileService = new FileService(@"C:\Users\Emanuel");
 IRepository<IContact> repo = new ContactRepository(jsonService, fileService);
 IContactService service = new ContactService(repo);
 SearchContactsService search = new SearchContactsService(service);
-var list = search.SearchContact("Ann");
+var list = service.GetAll();
 foreach (var item in list)
 {
-    Console.WriteLine(item.Name);
+    Console.WriteLine(item);
 }
 
 
