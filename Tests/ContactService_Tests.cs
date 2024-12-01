@@ -83,7 +83,7 @@ namespace Tests
 
             int result = contactService.Delete("None_existing_ID");
 
-            Assert.Equal((int)StatusCodes.BadRequest, result);
+            Assert.Equal((int)StatusCodes.NotFound, result);
 
         }
         [Fact]

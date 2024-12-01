@@ -18,6 +18,39 @@ public class SearchContactsService : ISearchContactsService
     {
         _contactService = contactService;
     }
+    public IEnumerable<IContact>? SearchContact(string searchTerm)
+    {
+        try
+        {
+            ConvertContacts();
+            BuildPipeLine();
+
+            // Transform Searchterm to get the features
+            List<SearchText> searchData = [SearchTextFactory.Create(searchTerm)];
+            var searchView = mlContext.Data.LoadFromEnumerable(searchData);
+            var transformedSerach = _transformer.Transform(searchView);
+            IEnumerable<TransformedSearchText> transformedSearchEnumerable = mlContext.Data.CreateEnumerable<TransformedSearchText>(transformedSerach, reuseRowObject: false);
+            float[] searchTermFeatures = transformedSearchEnumerable.First().Features;
+
+            // Transform Contact list to get the features
+            var contactView = mlContext.Data.LoadFromEnumerable(_contactsList);
+            var transfomredContacts = _transformer.Transform(contactView);
+            IEnumerable<TransformedSearchableContact> transformedContactsEnumerable = mlContext.Data.CreateEnumerable<TransformedSearchableContact>(transfomredContacts, reuseRowObject: false);
+
+            var listOfSimilarContacts = transformedContactsEnumerable
+                .OrderByDescending(x => TensorPrimitives.CosineSimilarity(x.Features, searchTermFeatures))
+                .Where(x => TensorPrimitives.CosineSimilarity(x.Features, searchTermFeatures) > 0)
+                .ToList();
+
+            IEnumerable<IContact> EnumerableOfSimilarContacts = listOfSimilarContacts;
+            return EnumerableOfSimilarContacts;
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex.Message);
+            return null;
+        }
+    }
     private void ConvertContacts()
     {
         try
@@ -46,39 +79,6 @@ public class SearchContactsService : ISearchContactsService
         catch (Exception ex) 
         {  
             Debug.WriteLine(ex.Message); 
-        }
-    }
-    public IEnumerable<IContact>? SearchContact(string searchTerm)
-    {
-        try
-        {
-            ConvertContacts();
-            BuildPipeLine();
-
-            // Transform Searchterm to get the features
-            List<SearchText> searchData = [new SearchText { SearchTerm = searchTerm }];
-            var searchView = mlContext.Data.LoadFromEnumerable(searchData);
-            var transformedSerach = _transformer.Transform(searchView);
-            IEnumerable<TransformedSearchText> transformedSearchEnumerable = mlContext.Data.CreateEnumerable<TransformedSearchText>(transformedSerach, reuseRowObject: false);
-            float[] searchTermFeatures = transformedSearchEnumerable.First().Features;
-
-            // Transform Contact list to get the features
-            var contactView = mlContext.Data.LoadFromEnumerable(_contactsList);
-            var transfomredContacts = _transformer.Transform(contactView);
-            IEnumerable<TransformedSearchableContact> transformedContactsEnumerable = mlContext.Data.CreateEnumerable<TransformedSearchableContact>(transfomredContacts, reuseRowObject: false);
-
-            var listOfSimilarContacts = transformedContactsEnumerable
-                .OrderByDescending(x => TensorPrimitives.CosineSimilarity(x.Features, searchTermFeatures))
-                .Where(x => TensorPrimitives.CosineSimilarity(x.Features, searchTermFeatures) > 0)
-                .ToList();
-
-            IEnumerable<IContact> EnumerableOfSimilarContacts = listOfSimilarContacts;
-            return EnumerableOfSimilarContacts;
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(ex.Message);
-            return null;
         }
     }
 }

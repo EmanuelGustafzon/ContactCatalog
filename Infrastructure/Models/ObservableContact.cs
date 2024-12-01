@@ -50,6 +50,6 @@ internal class ObservableContact : ObservableObject, IObservableContact
     public string City
     {
         get => _city;
-        set => SetProperty(ref _postcode, value);
+        set => SetProperty(ref _city, value);
     }
 }

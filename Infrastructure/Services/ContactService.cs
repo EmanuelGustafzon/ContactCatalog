@@ -41,7 +41,7 @@ public class ContactService : IContactService
     }
     public int Delete(string id)
     {
-        if (_contactRepository.Get(id) == null) return (int)StatusCodes.BadRequest;
+        if (_contactRepository.Get(id) == null) return (int)StatusCodes.NotFound;
         _contactRepository.Delete(id);
         SaveChanges();
         return (int)StatusCodes.OK;
