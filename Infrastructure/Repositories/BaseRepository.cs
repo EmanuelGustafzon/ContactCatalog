@@ -17,17 +17,18 @@ public abstract class BaseRepository<TEntity> : IRepository<TEntity> where TEnti
         _fileService = fileService;
         _storageFileName = storageFileName;
     }
-    public virtual int Add(TEntity entity)
+    public virtual bool Add(TEntity entity)
     {
         try
         {
             Entities.Add(entity);
-            return (int)StatusCodes.OK;
+            SaveChanges();
+            return true;
         }
         catch (Exception ex)
         {
             Debug.WriteLine(ex.Message);
-            return (int)StatusCodes.InternalError;
+            return false;
         }
     }
     public virtual IEnumerable<TEntity> Get()
@@ -35,23 +36,23 @@ public abstract class BaseRepository<TEntity> : IRepository<TEntity> where TEnti
         return Entities;
     }
     public abstract TEntity? Get(string id);
-    public abstract int Delete(string id);
-    public abstract int Update(string id, TEntity entity);
-    public int SaveChanges()
+    public abstract bool Delete(string id);
+    public abstract bool Update(string id, TEntity entity);
+    public bool SaveChanges()
     {
         try
         {
             var json = _jsonService.Serialize(Entities);
             _fileService.WriteFile(json, _storageFileName);
-            return (int)StatusCodes.OK;
+            return true;
         }
         catch (Exception ex)
         {
             Debug.WriteLine(ex.Message);
-            return (int)StatusCodes.InternalError;
+            return false;
         }
     }
-    public int PopulateListFromFile()
+    public bool PopulateListFromFile()
     {
         try
         {
@@ -59,18 +60,18 @@ public abstract class BaseRepository<TEntity> : IRepository<TEntity> where TEnti
             List<TEntity>? items = _jsonService.Deserialize(json);
             if (items == null)
             {
-                return (int)StatusCodes.NotFound;
+                return false;
             }
             foreach (var item in items)
             {
                 Entities.Add(item);
             }
-            return (int)StatusCodes.OK;
+            return true;
         }
         catch (Exception ex)
         {
             Debug.WriteLine(ex.Message);
-            return (int)StatusCodes.InternalError;
+            return false;
         }
     }
 }

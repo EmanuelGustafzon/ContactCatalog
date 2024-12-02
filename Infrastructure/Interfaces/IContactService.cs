@@ -1,11 +1,12 @@
-﻿using System.Collections.ObjectModel;
+﻿using Infrastructure.Models;
+using System.Collections.ObjectModel;
 
 namespace Infrastructure.Interfaces;
 public interface IContactService
 {
-    public int Add(IContact contact);
-    public IEnumerable<IContact> GetAll();
+    public StatusResponse Add(IContact contact);
+    public IEnumerable<IContactEntity> GetAll();
     public IContact? GetByID(string id);
-    public int Update(string id, IContact contact);
+    public StatusResponse Update(string id, IContact contact);
     public int Delete(string id);
 }

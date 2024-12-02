@@ -2,6 +2,6 @@
 {
     public interface ISearchContactsService
     {
-        public IEnumerable<IContact>? SearchContact(string searchTerm);
+        public IEnumerable<IContactEntity>? SearchContact(string searchTerm);
     }
 }

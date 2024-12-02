@@ -3,12 +3,11 @@
 namespace Infrastructure.Interfaces;
 public interface IRepository<TEntity> where TEntity : class
 {
-    public int Add(TEntity entity);
+    public bool Add(TEntity entity);
     public IEnumerable<TEntity> Get();
     public TEntity? Get(string id);
-    public int Delete(string id);
-    public int Update(string id, TEntity entity);
-    public int SaveChanges();
-
-    public int PopulateListFromFile();
+    public bool Delete(string id);
+    public bool Update(string id, TEntity entity);
+    public bool SaveChanges();
+    public bool PopulateListFromFile();
 }

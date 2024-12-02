@@ -6,9 +6,9 @@ namespace Infrastructure.Interfaces;
 
 [JsonDerivedType(typeof(Contact), nameof(Contact))]
 [JsonDerivedType(typeof(ObservableContact), nameof(ObservableContact))]
+[JsonDerivedType(typeof(ContactEntity), nameof(ContactEntity))]
 public interface IContact
 {
-    string ID { get; set; }
     string Name { get; set; }
     string Lastname { get; set; }
     string Email { get; set; }

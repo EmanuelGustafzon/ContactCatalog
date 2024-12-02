@@ -18,15 +18,17 @@ public class SearchContactsService : ISearchContactsService
     {
         _contactService = contactService;
     }
-    public IEnumerable<IContact>? SearchContact(string searchTerm)
+    public IEnumerable<IContactEntity>? SearchContact(string searchTerm)
     {
         try
         {
             ConvertContacts();
             BuildPipeLine();
 
+            if (_contactsList.Count() == 0) return [];
+
             // Transform Searchterm to get the features
-            List<SearchText> searchData = [SearchTextFactory.Create(searchTerm)];
+            List<SearchText> searchData = [new SearchText { SearchTerm = searchTerm}];
             var searchView = mlContext.Data.LoadFromEnumerable(searchData);
             var transformedSerach = _transformer.Transform(searchView);
             IEnumerable<TransformedSearchText> transformedSearchEnumerable = mlContext.Data.CreateEnumerable<TransformedSearchText>(transformedSerach, reuseRowObject: false);
@@ -42,7 +44,7 @@ public class SearchContactsService : ISearchContactsService
                 .Where(x => TensorPrimitives.CosineSimilarity(x.Features, searchTermFeatures) > 0)
                 .ToList();
 
-            IEnumerable<IContact> EnumerableOfSimilarContacts = listOfSimilarContacts;
+            IEnumerable<IContactEntity> EnumerableOfSimilarContacts = listOfSimilarContacts;
             return EnumerableOfSimilarContacts;
         }
         catch (Exception ex)
@@ -66,19 +68,19 @@ public class SearchContactsService : ISearchContactsService
         {
             Debug.WriteLine(ex.Message);
         }
-        
+
     }
     private void BuildPipeLine()
     {
         try
         {
-            var contactView = mlContext.Data.LoadFromEnumerable(_contactsList);
+            IDataView contactView = mlContext.Data.LoadFromEnumerable(_contactsList);
             TextFeaturizingEstimator pipeline = mlContext.Transforms.Text.FeaturizeText("Features", "SearchTerm");
             _transformer = pipeline.Fit(contactView);
-        } 
-        catch (Exception ex) 
-        {  
-            Debug.WriteLine(ex.Message); 
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex.Message);
         }
     }
 }

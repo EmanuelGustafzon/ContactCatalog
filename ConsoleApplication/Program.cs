@@ -3,24 +3,30 @@ using Infrastructure.Factories;
 using Infrastructure.Interfaces;
 using Infrastructure.Repositories;
 using Infrastructure.Services;
-using Microsoft.VisualBasic.FileIO;
 
-Console.WriteLine("Hello, World!");
-
-IContact Alice = ContactFactory.Create("Alicia", "Larsson", "email", "Phone", "address", "Postcode", "City");
-IContact Anna = ContactFactory.Create("Anna", "Hansson", "email", "Phone", "address", "Postcode", "City");
-IContact Ann = ContactFactory.Create("Ann", "dan", "email", "Phone", "address", "Postcode", "City");
-IContact annaLisa = ContactFactory.Create("Anna-Lisa", "Hansson", "email", "Phone", "address", "Postcode", "City");
-
-IJsonService<IContact> jsonService = new JsonService<IContact>();
+IJsonService<IContactEntity> jsonService = new JsonService<IContactEntity>();
 IFileService fileService = new FileService(@"C:\Users\Emanuel");
-IRepository<IContact> repo = new ContactRepository(jsonService, fileService);
-IContactService service = new ContactService(repo);
-SearchContactsService search = new SearchContactsService(service);
-var list = service.GetAll();
-foreach (var item in list)
+IRepository<IContactEntity> repo = new ContactRepository(jsonService, fileService);
+
+IContactService contactService = new ContactService(repo);
+IContact emanuel = ContactFactory.Create("emanuel", "a", "s@g.s", "0761888619", "e", "e", "2");
+var r = contactService.Add(emanuel);
+Console.WriteLine(r.Message);
+
+foreach (var contact in contactService.GetAll())
 {
-    Console.WriteLine(item);
+    Console.WriteLine(contact.Name);
 }
+
+ISearchContactsService search = new SearchContactsService(contactService);
+var searchResult = search.SearchContact("Emanuel");
+
+foreach(var contact in searchResult)
+{
+    Console.WriteLine(contact.Name);
+}
+
+
+
 
 

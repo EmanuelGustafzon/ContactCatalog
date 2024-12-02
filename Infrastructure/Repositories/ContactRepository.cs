@@ -1,45 +1,45 @@
 ﻿using Infrastructure.Interfaces;
-using Infrastructure.Models.Enums;
-using System.Collections.ObjectModel;
 
 namespace Infrastructure.Repositories;
 
-public class ContactRepository : BaseRepository<IContact>
+public class ContactRepository : BaseRepository<IContactEntity>
 {
-    public ContactRepository(IJsonService<IContact> jsonService, IFileService fileService)
+    public ContactRepository(IJsonService<IContactEntity> jsonService, IFileService fileService)
         : base(jsonService, fileService, "Contacts.json") 
     {
+        PopulateListFromFile();
     }
-    public override int Delete(string id)
+    public override bool Delete(string id)
     {
         try
         {
-            IContact? contact = Entities.FirstOrDefault(x => x.ID == id);
-            if (contact == null) return (int)StatusCodes.NotFound;
+            IContactEntity? contact = Entities.FirstOrDefault(x => x.ID == id);
+            if (contact == null) return false;
             Entities.Remove(contact);
-            return (int)StatusCodes.OK;
+            SaveChanges();
+            return true;
 
         }
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
-            return (int)StatusCodes.InternalError;
+            return false;
         }
     }
 
-    public override IContact? Get(string id)
+    public override IContactEntity? Get(string id)
     {
-        IContact? foundContact = Entities.FirstOrDefault(x => x.ID == id);
+        IContactEntity? foundContact = Entities.FirstOrDefault(x => x.ID == id);
         return foundContact ?? null;
     }
 
-    public override int Update(string id, IContact entity)
+    public override bool Update(string id, IContactEntity entity)
     {
         try
         {
-            IContact? contact = Entities.FirstOrDefault(x => x.ID == id);
+            IContactEntity? contact = Entities.FirstOrDefault(x => x.ID == id);
 
-            if (contact == null) return (int)StatusCodes.NotFound;
+            if (contact == null) return false;
 
             contact.Name = entity.Name;
             contact.Lastname = entity.Lastname;
@@ -49,13 +49,15 @@ public class ContactRepository : BaseRepository<IContact>
             contact.Postcode = entity.Postcode;
             contact.City = entity.City;
 
-            return (int)StatusCodes.OK;
+            SaveChanges();
+
+            return true;
 
         }
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
-            return (int)StatusCodes.InternalError;
+            return false;
         }
     }
 }

@@ -25,12 +25,28 @@ public class ContactFactory_Tests
         Assert.Equal("city", contact.City);
     }
     [Fact]
+    public void CreateWithIContactAsArgumentShould_ReturnAIContactEntity()
+    {
+        IContact contact = ContactFactory.Create("name", "lastname", "email", "phone", "address", "postcode", "city");
+        IContactEntity contactEntity = ContactFactory.Create(contact);
+        Assert.IsAssignableFrom<IContactEntity>(contactEntity);
+        Assert.Equal("name", contactEntity.Name);
+        Assert.Equal("lastname", contactEntity.Lastname);
+        Assert.Equal("email", contactEntity.Email);
+        Assert.Equal("phone", contactEntity.Phone);
+        Assert.Equal("address", contactEntity.Address);
+        Assert.Equal("postcode", contactEntity.Postcode);
+        Assert.Equal("city", contactEntity.City);
+    }
+    [Fact]
     public void CreateObservableShould_ReturnAObservableEntity()
     {
         IContact contact = ContactFactory.Create("name", "lastname", "email", "phone", "address", "postcode", "city");
-        IObservableContact observableContact = ContactFactory.CreateObservable(contact);
+        IContactEntity contactEntity = ContactFactory.Create(contact);
+        IObservableContact observableContact = ContactFactory.CreateObservable(contactEntity);
+
         Assert.IsAssignableFrom<IContact>(contact);
-        Assert.Equal(contact.ID, observableContact.ID);
+        Assert.Equal(contactEntity.ID, observableContact.ID);
         Assert.Equal("name", observableContact.Name);
         Assert.Equal("lastname", observableContact.Lastname);
         Assert.Equal("email", observableContact.Email);

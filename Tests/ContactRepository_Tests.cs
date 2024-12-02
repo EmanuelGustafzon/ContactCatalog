@@ -10,24 +10,26 @@ public class ContactRepository_Tests
     [Fact]
     public void AddShould_AddContactToList()
     {
-        Mock<IJsonService<IContact>> mockJsonServcie = new();
+        Mock<IJsonService<IContactEntity>> mockJsonServcie = new();
         Mock<IFileService> mockFileServcie = new();
         ContactRepository contactRepo = new(mockJsonServcie.Object, mockFileServcie.Object);
 
         IContact contact = ContactFactory.Create("Emanuel", "lastname", "email", "phone", "address", "postcode", "city");
-        int result = contactRepo.Add(contact);
+        IContactEntity contactEntity = ContactFactory.Create(contact);
+        bool result = contactRepo.Add(contactEntity);
 
-        Assert.Equal(200, result);
+        Assert.True(result);
     }
     [Fact]
     public void GetShould_returnAllEntities()
     {
-        Mock<IJsonService<IContact>> mockJsonServcie = new();
+        Mock<IJsonService<IContactEntity>> mockJsonServcie = new();
         Mock<IFileService> mockFileServcie = new();
         ContactRepository contactRepo = new(mockJsonServcie.Object, mockFileServcie.Object);
 
         IContact contact = ContactFactory.Create("Emanuel", "lastname", "email", "phone", "address", "postcode", "city");
-        contactRepo.Add(contact);
+        IContactEntity contactEntity = ContactFactory.Create(contact);
+        contactRepo.Add(contactEntity);
 
         IEnumerable<IContact> list = contactRepo.Get();
 
@@ -36,31 +38,36 @@ public class ContactRepository_Tests
     [Fact]
     public void GetOverLoadWithIDShould_returnAnIContactWithThatID()
     {
-        Mock<IJsonService<IContact>> mockJsonServcie = new();
+        Mock<IJsonService<IContactEntity>> mockJsonServcie = new();
         Mock<IFileService> mockFileServcie = new();
         ContactRepository contactRepo = new(mockJsonServcie.Object, mockFileServcie.Object);
 
         IContact contact = ContactFactory.Create("Emanuel", "lastname", "email", "phone", "address", "postcode", "city");
-        contactRepo.Add(contact);
+        IContactEntity contactEntity = ContactFactory.Create(contact);
+        contactRepo.Add(contactEntity);
 
-        IContact? foundContact = contactRepo.Get(contact.ID);
+        IContactEntity? foundContact = contactRepo.Get(contactEntity.ID);
 
-        Assert.Equal(foundContact?.ID, contact.ID);
+        Assert.Equal(foundContact?.ID, contactEntity.ID);
         Assert.IsAssignableFrom<IContact>(foundContact);
     }
+    [Fact]
     public void UpdateShould_UpdateAContact()
     {
-        Mock<IJsonService<IContact>> mockJsonServcie = new();
+        Mock<IJsonService<IContactEntity>> mockJsonServcie = new();
         Mock<IFileService> mockFileServcie = new();
         ContactRepository contactRepo = new(mockJsonServcie.Object, mockFileServcie.Object);
 
         IContact contact = ContactFactory.Create("Emanuel", "lastname", "email", "phone", "address", "postcode", "city");
         IContact updatedContact = ContactFactory.Create("Erik", "svensson", "domain@gmail.com", "0701", "aaa", "123", "GBG");
-        contactRepo.Add(contact);
-        contactRepo.Update(contact.ID, updatedContact);
+        IContactEntity contactEntity = ContactFactory.Create(contact);
+        IContactEntity updatedContactEntity = ContactFactory.Create(updatedContact);
+        contactRepo.Add(contactEntity);
+        bool result = contactRepo.Update(contactEntity.ID, updatedContactEntity);
 
-        IContact? foundContact = contactRepo.Get(contact.ID); 
+        IContactEntity? foundContact = contactRepo.Get(contactEntity.ID); 
 
+        Assert.True(result);
         Assert.Equal("Erik", foundContact?.Name);
         Assert.Equal("svensson", foundContact?.Lastname);
         Assert.Equal("domain@gmail.com", foundContact?.Email);
