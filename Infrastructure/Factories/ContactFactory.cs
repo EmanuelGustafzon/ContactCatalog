@@ -10,21 +10,9 @@ public static class ContactFactory
     }
     public static IContact Create(string name, string lastname, string email, string phone, string address, string postcode, string city)
     {
-        return new ContactEntity { Name = name, Lastname = lastname, Email = email, Phone = phone, Address = address, Postcode = postcode, City = city };
+        return new Contact { Name = name, Lastname = lastname, Email = email, Phone = phone, Address = address, Postcode = postcode, City = city };
     }
-    public static IContactEntity Create(IContact contact)
-    {
-        return new ContactEntity { 
-            Name = contact.Name, 
-            Lastname = contact.Lastname, 
-            Email = contact.Email, 
-            Phone = contact.Phone, 
-            Address = contact.Address, 
-            Postcode = contact.Postcode, 
-            City = contact.City 
-        };
-    }
-    public static IObservableContact CreateObservable(IContactEntity contact)
+    public static IObservableContact CreateObservable(IContact contact)
     {
         return new ObservableContact
         {
@@ -38,7 +26,7 @@ public static class ContactFactory
             City = contact.City,
         };
     }
-    internal static SearchableContact CreateSearchable(IContactEntity contact) 
+    internal static SearchableContact CreateSearchable(IContact contact) 
     {
         SearchableContact searchableContact = new();
         searchableContact.ID = contact.ID;

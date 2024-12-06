@@ -2,9 +2,9 @@
 
 namespace Infrastructure.Repositories;
 
-public class ContactRepository : BaseRepository<IContactEntity>
+public class ContactRepository : BaseRepository<IContact>
 {
-    public ContactRepository(IJsonService<IContactEntity> jsonService, IFileService fileService)
+    public ContactRepository(IJsonService<IContact> jsonService, IFileService fileService)
         : base(jsonService, fileService, "Contacts.json") 
     {
         PopulateListFromFile();
@@ -13,7 +13,7 @@ public class ContactRepository : BaseRepository<IContactEntity>
     {
         try
         {
-            IContactEntity? contact = Entities.FirstOrDefault(x => x.ID == id);
+            IContact? contact = Entities.FirstOrDefault(x => x.ID == id);
             if (contact == null) return false;
             Entities.Remove(contact);
             SaveChanges();
@@ -27,17 +27,17 @@ public class ContactRepository : BaseRepository<IContactEntity>
         }
     }
 
-    public override IContactEntity? Get(string id)
+    public override IContact? Get(string id)
     {
-        IContactEntity? foundContact = Entities.FirstOrDefault(x => x.ID == id);
+        IContact? foundContact = Entities.FirstOrDefault(x => x.ID == id);
         return foundContact ?? null;
     }
 
-    public override bool Update(string id, IContactEntity entity)
+    public override bool Update(string id, IContact entity)
     {
         try
         {
-            IContactEntity? contact = Entities.FirstOrDefault(x => x.ID == id);
+            IContact? contact = Entities.FirstOrDefault(x => x.ID == id);
 
             if (contact == null) return false;
 

@@ -3,7 +3,7 @@ using Infrastructure.Repositories;
 using Infrastructure.Services;
 using Microsoft.Extensions.Logging;
 
-namespace MauiApplication
+namespace CrossPlatformApp
 {
     public static class MauiProgram
     {
@@ -20,11 +20,14 @@ namespace MauiApplication
 
 #if DEBUG
     		builder.Logging.AddDebug();
+            builder.Services.AddSingleton<IFileService, FileService>(x => new FileService(@"C:\Users\Emanuel"));
             builder.Services.AddSingleton<IJsonService<IContact>, JsonService<IContact>>();
-            builder.Services.AddSingleton<IFileService, FileService>(provider => 
-                new FileService(@"C:\Users\Emanuel"));
             builder.Services.AddSingleton<IRepository<IContact>, ContactRepository>();
             builder.Services.AddSingleton<IContactService, ContactService>();
+            builder.Services.AddSingleton<IContactService, ContactService>();
+            builder.Services.AddSingleton<ISearchContactsService, SearchContactsService>();
+
+
 #endif
 
             return builder.Build();

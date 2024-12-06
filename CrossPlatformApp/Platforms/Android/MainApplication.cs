@@ -1,7 +1,7 @@
 ﻿using Android.App;
 using Android.Runtime;
 
-namespace MauiApplication
+namespace CrossPlatformApp
 {
     [Application]
     public class MainApplication : MauiApplication

@@ -1,4 +1,4 @@
-﻿namespace MauiApplication
+﻿namespace CrossPlatformApp
 {
     public partial class AppShell : Shell
     {

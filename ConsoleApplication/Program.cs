@@ -4,9 +4,9 @@ using Infrastructure.Interfaces;
 using Infrastructure.Repositories;
 using Infrastructure.Services;
 
-IJsonService<IContactEntity> jsonService = new JsonService<IContactEntity>();
+IJsonService<IContact> jsonService = new JsonService<IContact>();
 IFileService fileService = new FileService(@"C:\Users\Emanuel");
-IRepository<IContactEntity> repo = new ContactRepository(jsonService, fileService);
+IRepository<IContact> repo = new ContactRepository(jsonService, fileService);
 
 IContactService contactService = new ContactService(repo);
 IContact emanuel = ContactFactory.Create("emanuel", "a", "s@g.s", "0761888619", "e", "e", "2");

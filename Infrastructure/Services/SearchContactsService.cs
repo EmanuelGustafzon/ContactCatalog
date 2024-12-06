@@ -18,7 +18,7 @@ public class SearchContactsService : ISearchContactsService
     {
         _contactService = contactService;
     }
-    public IEnumerable<IContactEntity>? SearchContact(string searchTerm)
+    public IEnumerable<IContact>? SearchContact(string searchTerm)
     {
         try
         {
@@ -44,7 +44,7 @@ public class SearchContactsService : ISearchContactsService
                 .Where(x => TensorPrimitives.CosineSimilarity(x.Features, searchTermFeatures) > 0)
                 .ToList();
 
-            IEnumerable<IContactEntity> EnumerableOfSimilarContacts = listOfSimilarContacts;
+            IEnumerable<IContact> EnumerableOfSimilarContacts = listOfSimilarContacts;
             return EnumerableOfSimilarContacts;
         }
         catch (Exception ex)

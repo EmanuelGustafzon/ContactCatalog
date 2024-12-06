@@ -1,6 +1,6 @@
 ﻿using Foundation;
 
-namespace MauiApplication
+namespace CrossPlatformApp
 {
     [Register("AppDelegate")]
     public class AppDelegate : MauiUIApplicationDelegate

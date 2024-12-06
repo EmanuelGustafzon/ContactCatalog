@@ -11,16 +11,14 @@ namespace Tests
         public void SearchContactShould_ReturnEnumerableOfMostSimilarresult()
         {
             Mock<IContactService> mockDataProvider = new();
-            List<IContactEntity> sampleData = [];
+            List<IContact> sampleData = [];
             IContact Emanuel = ContactFactory.Create("Emanuel", "Gustafzon", "email", "phone", "address", "postcode", "city");
             IContact Anna = ContactFactory.Create("Anna", "Svensson", "email", "phone", "address", "postcode", "city");
             IContact AnnaLisa = ContactFactory.Create("Anna-Lisa", "Larsson", "email", "phone", "address", "postcode", "city");
-            IContactEntity EmanuelEntity = ContactFactory.Create(Emanuel);
-            IContactEntity AnnaEntity = ContactFactory.Create(Anna);
-            IContactEntity AnnaLisaEntity = ContactFactory.Create(AnnaLisa);
-            sampleData.Add(EmanuelEntity);
-            sampleData.Add(AnnaEntity);
-            sampleData.Add(AnnaLisaEntity);
+
+            sampleData.Add(Emanuel);
+            sampleData.Add(Anna);
+            sampleData.Add(AnnaLisa);
 
             mockDataProvider.Setup(dp => dp.GetAll()).Returns(sampleData);
             ISearchContactsService searchService = new SearchContactsService(mockDataProvider.Object);

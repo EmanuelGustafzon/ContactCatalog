@@ -2,7 +2,7 @@
 
 namespace Infrastructure.Interfaces;
 
-public interface IObservableContact : IContactEntity, INotifyPropertyChanged
+public interface IObservableContact : IContact, INotifyPropertyChanged
 {
 
 }
