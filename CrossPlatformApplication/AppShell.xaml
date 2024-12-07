@@ -11,5 +11,9 @@
         Title="Home"
         ContentTemplate="{DataTemplate pages:HomePage}"
         Route="HomePage" />
+    <ShellContent
+    Title="Create Contact"
+    ContentTemplate="{DataTemplate pages:CreateContact}"
+    Route="CreateContact" />
 
 </Shell>

@@ -1,14 +1,36 @@
-﻿using Infrastructure.Interfaces;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Infrastructure.Factories;
+using Infrastructure.Interfaces;
+using Infrastructure.Models;
 using Infrastructure.Services;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 
 namespace CrossPlatformApplication.ViewModels;
 
-public class ContactsViewModel
+public partial class ContactsViewModel : ObservableObject
 {
     IContactService _contactService;
-    public ObservableCollection<IContact> Contacts { get; set; } = new();
+
+    public ObservableCollection<IContact> Contacts { get; set; } = [];
+
+    [ObservableProperty]
+    string feedback = "";
+    [ObservableProperty]
+    string firstname = "";
+    [ObservableProperty]
+    string lastname = "";
+    [ObservableProperty]
+    string email = "";
+    [ObservableProperty]
+    string phone = "";
+    [ObservableProperty]
+    string address = "";
+    [ObservableProperty]
+    string postcode = "";
+    [ObservableProperty]
+    string city = "";
 
     public ContactsViewModel(IContactService contactService)
     {
@@ -29,6 +51,22 @@ public class ContactsViewModel
         {
             Debug.WriteLine(ex.Message);
         }
+    }
+
+    [RelayCommand]
+    public void AddContact()
+    {
+        IContact contact = ContactFactory.Create(
+            Firstname,
+            Lastname,
+            Email,
+            Phone,
+            Address,
+            Postcode,
+            City
+            );
+        _contactService.Add(contact);
+        Contacts.Add(contact);
     }
 
 }

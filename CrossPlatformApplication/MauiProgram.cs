@@ -27,6 +27,7 @@ namespace CrossPlatformApplication
             builder.Services.AddSingleton<ISearchContactsService, SearchContactsService>();
             builder.Services.AddSingleton<ContactsViewModel>();
             builder.Services.AddSingleton<HomePage>();
+            builder.Services.AddSingleton<CreateContact>();
 #if DEBUG
             builder.Logging.AddDebug();
 #endif

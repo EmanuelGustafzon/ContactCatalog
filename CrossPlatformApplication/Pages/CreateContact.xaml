@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:CrossPlatformApplication.ViewModels"
+             x:DataType="viewmodels:ContactsViewModel"
+             x:Class="CrossPlatformApplication.Pages.CreateContact"
+             Title="CreateContact">
+    <VerticalStackLayout>
+        <Label 
+            Text="Add a new contact!"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+        <Entry 
+            Text="{Binding Firstname}"
+            Placeholder="Firstname"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+        <Entry 
+            Text="{Binding Lastname}"
+            Placeholder="LastName"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+        <Entry 
+            Text="{Binding Email}"
+            Placeholder="Email"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+        <Entry 
+            Text="{Binding Phone}"
+            Placeholder="Phone Number"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+        <Entry 
+            Text="{Binding Address}"
+            Placeholder="Address"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+        <Entry 
+            Text="{Binding Postcode}"
+            Placeholder="Postcode"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+        <Entry 
+            Text="{Binding City}"
+            Placeholder="City"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+        <Button Text="Add Contact" Command="{Binding AddContactCommand}"/>
+        <Label Text="{Binding Feedback}"/>
+    </VerticalStackLayout>
+</ContentPage>
