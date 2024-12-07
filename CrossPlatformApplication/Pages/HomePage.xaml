@@ -1,25 +1,22 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:model="clr-namespace:Infrastructure.Models;assembly=Infrastructure"
-             xmlns:viewmodels="clr-namespace:CrossPlatformApp.ViewModels"
-             x:Class="CrossPlatformApp.Pages.Home"
-             Title="Home">
-    <ContentPage.BindingContext>
-        <viewmodels:ContactsViewModel/>
-    </ContentPage.BindingContext>
+             xmlns:models="clr-namespace:Infrastructure.Models;assembly=Infrastructure"
+             xmlns:viewmodels="clr-namespace:CrossPlatformApplication.ViewModels"
+             x:Class="CrossPlatformApplication.Pages.HomePage"
+             Title="HomePage">
+
     <VerticalStackLayout>
         <Label 
-            Text="Welcome to .NET"
+            Text="Welcome to .NET MAUI!"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
         <CollectionView ItemsSource="{Binding Contacts}">
             <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="model:Contact">
+                <DataTemplate x:DataType="models:Contact">
                     <Label Text="{Binding Name}"/>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-
     </VerticalStackLayout>
 </ContentPage>
