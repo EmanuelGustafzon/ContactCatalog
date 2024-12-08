@@ -56,7 +56,9 @@ public partial class ContactsViewModel : ObservableObject
     [RelayCommand]
     public void AddContact()
     {
-        IContact contact = ContactFactory.Create(
+        try
+        {
+            IContact contact = ContactFactory.Create(
             Firstname,
             Lastname,
             Email,
@@ -65,8 +67,14 @@ public partial class ContactsViewModel : ObservableObject
             Postcode,
             City
             );
-        _contactService.Add(contact);
-        Contacts.Add(contact);
+            _contactService.Add(contact);
+            Contacts.Add(contact);
+            Feedback = "Success";
+        }
+        catch (Exception ex)
+        {
+            Feedback = ex.Message;
+        }
     }
 
 }

@@ -4,19 +4,43 @@
              xmlns:models="clr-namespace:Infrastructure.Models;assembly=Infrastructure"
              xmlns:viewmodels="clr-namespace:CrossPlatformApplication.ViewModels"
              x:Class="CrossPlatformApplication.Pages.HomePage"
-             Title="HomePage">
-
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-        <CollectionView ItemsSource="{Binding Contacts}">
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="models:Contact">
-                    <Label Text="{Binding Name}"/>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-    </VerticalStackLayout>
+             Title="Home">
+    <ScrollView>
+        <VerticalStackLayout >
+            <Label 
+                FontSize="Title"
+                Text="View All Your Contacts"
+                VerticalOptions="Center" 
+                HorizontalOptions="Center" />
+                <CollectionView ItemsSource="{Binding Contacts}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:Contact">
+                            <Grid Padding="8">
+                                <Border BackgroundColor="WhiteSmoke">
+                                    <Grid ColumnDefinitions=".7*, .15*, .15*">
+                                        <VerticalStackLayout Padding="24">
+                                            <HorizontalStackLayout Spacing="24">
+                                                <Label Text="{Binding Name}"/>
+                                                <Label Text="{Binding Lastname}"/>
+                                            </HorizontalStackLayout>
+                                            <HorizontalStackLayout Spacing="24">
+                                                <Label Text="{Binding Phone}"/>
+                                                <Label Text="{Binding Email}"/>
+                                            </HorizontalStackLayout>
+                                            <HorizontalStackLayout Spacing="24">
+                                                <Label Text="{Binding Address}"/>
+                                                <Label Text="{Binding Postcode}"/>
+                                                <Label Text="{Binding City}"/>
+                                            </HorizontalStackLayout>
+                                        </VerticalStackLayout>
+                                        <Button Grid.Column="1" Text="Update" BackgroundColor="CadetBlue"/>
+                                        <Button Grid.Column="2" Text="Delete" Background="IndianRed"/>
+                                    </Grid>
+                                </Border>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>
