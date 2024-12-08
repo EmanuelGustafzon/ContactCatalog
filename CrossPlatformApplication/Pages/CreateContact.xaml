@@ -4,7 +4,7 @@
              xmlns:viewmodels="clr-namespace:CrossPlatformApplication.ViewModels"
              x:DataType="viewmodels:ContactsViewModel"
              x:Class="CrossPlatformApplication.Pages.CreateContact"
-             Title="CreateContact">
+             Title="Create Contact">
     <VerticalStackLayout>
         <Label 
             Text="Add a new contact!"

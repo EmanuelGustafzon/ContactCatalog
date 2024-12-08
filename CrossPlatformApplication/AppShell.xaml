@@ -15,5 +15,10 @@
     Title="Create Contact"
     ContentTemplate="{DataTemplate pages:CreateContact}"
     Route="CreateContact" />
+    <ShellContent
+        Title="Search Contacts"
+        ContentTemplate="{DataTemplate pages:SearchContacts}"
+        Route="SearchContacts" />
+
 
 </Shell>
