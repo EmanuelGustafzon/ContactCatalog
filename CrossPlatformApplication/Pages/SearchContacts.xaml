@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:models="clr-namespace:Infrastructure.Models;assembly=Infrastructure"
              xmlns:viewmodels="clr-namespace:CrossPlatformApplication.ViewModels"
              x:DataType="viewmodels:SearchContactsViewModel"
+             xmlns:models="clr-namespace:Infrastructure.Models;assembly=Infrastructure"
              x:Class="CrossPlatformApplication.Pages.SearchContacts"
              Title="Search Contacts">
     <ScrollView>
@@ -33,7 +33,11 @@
                                             <Label Text="{Binding City}"/>
                                         </HorizontalStackLayout>
                                     </VerticalStackLayout>
-                                    <Button Grid.Column="1" Text="Edit" BackgroundColor="CadetBlue"/>
+                                    <Button Grid.Column="1" 
+                                        Text="Edit Contact" 
+                                        BackgroundColor="CadetBlue"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:SearchContactsViewModel}}, Path=NavigateToDetailsCommand}"
+                                        CommandParameter="{Binding ID}"/>
                                 </Grid>
                             </Border>
                         </Grid>

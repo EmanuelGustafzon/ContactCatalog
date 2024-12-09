@@ -1,8 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CrossPlatformApplication.Pages;
 using Infrastructure.Interfaces;
-using Infrastructure.Services;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 
 namespace CrossPlatformApplication.ViewModels;
 
@@ -27,7 +28,13 @@ public partial class SearchContactsViewModel : ObservableObject
             foreach (var contact in list)
             {
                 SearchResult.Add(contact);
+                Debug.WriteLine(contact.Name);
             }
         }
+    }
+    [RelayCommand]
+    async Task NavigateToDetails(string id)
+    {
+        await Shell.Current.GoToAsync($"{nameof(EditContact)}?Id={id}");
     }
 }

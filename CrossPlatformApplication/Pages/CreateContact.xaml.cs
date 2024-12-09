@@ -4,7 +4,7 @@ namespace CrossPlatformApplication.Pages;
 
 public partial class CreateContact : ContentPage
 {
-	public CreateContact(ContactsViewModel vm)
+	public CreateContact(CreateContactViewModel vm)
 	{
 		InitializeComponent();
 		BindingContext = vm;

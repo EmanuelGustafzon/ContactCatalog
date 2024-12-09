@@ -3,8 +3,6 @@ using CommunityToolkit.Mvvm.Input;
 using CrossPlatformApplication.Pages;
 using Infrastructure.Factories;
 using Infrastructure.Interfaces;
-using Infrastructure.Models;
-using Infrastructure.Services;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 
@@ -15,23 +13,6 @@ public partial class ContactsViewModel : ObservableObject
     IContactService _contactService;
     ContactsCollectionViewModel _contactsCollectionVm;
     public ObservableCollection<IObservableContact> Contacts => _contactsCollectionVm.Contacts;
-
-    [ObservableProperty]
-    string feedback = "";
-    [ObservableProperty]
-    string firstname = "";
-    [ObservableProperty]
-    string lastname = "";
-    [ObservableProperty]
-    string email = "";
-    [ObservableProperty]
-    string phone = "";
-    [ObservableProperty]
-    string address = "";
-    [ObservableProperty]
-    string postcode = "";
-    [ObservableProperty]
-    string city = "";
 
     public ContactsViewModel(IContactService contactService, ContactsCollectionViewModel contactsCollectionVm)
     {
@@ -61,29 +42,6 @@ public partial class ContactsViewModel : ObservableObject
         }
     }
 
-    [RelayCommand]
-    public void AddContact()
-    {
-        try
-        {
-            IContact contact = ContactFactory.Create(
-            Firstname,
-            Lastname,
-            Email,
-            Phone,
-            Address,
-            Postcode,
-            City
-            );
-            _contactService.Add(contact);
-            Contacts.Add(ContactFactory.CreateObservable(contact));
-            Feedback = "Success";
-        }
-        catch (Exception ex)
-        {
-            Feedback = ex.Message;
-        }
-    }
     [RelayCommand]
     async Task NavigateToDetails(string id)
     {
