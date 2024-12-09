@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CrossPlatformApplication.Pages;
 using Infrastructure.Factories;
 using Infrastructure.Interfaces;
 using Infrastructure.Models;
@@ -12,8 +13,8 @@ namespace CrossPlatformApplication.ViewModels;
 public partial class ContactsViewModel : ObservableObject
 {
     IContactService _contactService;
-
-    public ObservableCollection<IContact> Contacts { get; set; } = [];
+    ContactsCollectionViewModel _contactsCollectionVm;
+    public ObservableCollection<IObservableContact> Contacts => _contactsCollectionVm.Contacts;
 
     [ObservableProperty]
     string feedback = "";
@@ -32,9 +33,10 @@ public partial class ContactsViewModel : ObservableObject
     [ObservableProperty]
     string city = "";
 
-    public ContactsViewModel(IContactService contactService)
+    public ContactsViewModel(IContactService contactService, ContactsCollectionViewModel contactsCollectionVm)
     {
         _contactService = contactService;
+        _contactsCollectionVm = contactsCollectionVm;
         GetAllContacts(); 
     }
 
@@ -43,9 +45,15 @@ public partial class ContactsViewModel : ObservableObject
         try
         {
             IEnumerable<IContact> allContacts = _contactService.GetAll();
-            foreach(var contact in allContacts)
+
+            IEnumerable<IObservableContact>? observableContacts = allContacts.Select(contact => ContactFactory.CreateObservable(contact));
+            foreach (var contact in observableContacts)
             {
                 Contacts.Add(contact);
+            }
+            foreach(var a in Contacts)
+            {
+                Debug.WriteLine("---",a.Name);
             }
         } catch (Exception ex)
         {
@@ -68,7 +76,7 @@ public partial class ContactsViewModel : ObservableObject
             City
             );
             _contactService.Add(contact);
-            Contacts.Add(contact);
+            Contacts.Add(ContactFactory.CreateObservable(contact));
             Feedback = "Success";
         }
         catch (Exception ex)
@@ -76,5 +84,9 @@ public partial class ContactsViewModel : ObservableObject
             Feedback = ex.Message;
         }
     }
-
+    [RelayCommand]
+    async Task NavigateToDetails(string id)
+    {
+        await Shell.Current.GoToAsync($"{nameof(ContactDetails)}?Id={id}");
+    }
 }

@@ -12,9 +12,9 @@
                 Text="View All Your Contacts"
                 VerticalOptions="Center" 
                 HorizontalOptions="Center" />
-                <CollectionView ItemsSource="{Binding Contacts}">
+                <CollectionView ItemsSource="{Binding Contacts}" SelectionMode="None">
                     <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="models:Contact">
+                        <DataTemplate x:DataType="models:ObservableContact">
                             <Grid Padding="8">
                                 <Border BackgroundColor="WhiteSmoke">
                                     <Grid ColumnDefinitions=".7*,.2*">
@@ -33,7 +33,11 @@
                                                 <Label Text="{Binding City}"/>
                                             </HorizontalStackLayout>
                                         </VerticalStackLayout>
-                                        <Button Grid.Column="1" Text="Edit" BackgroundColor="CadetBlue"/>
+                                        <Button Grid.Column="1" 
+                                                Text="View Details" 
+                                                BackgroundColor="CadetBlue"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:ContactsViewModel}}, Path=NavigateToDetailsCommand}"
+                                                CommandParameter="{Binding ID}"/>
                                     </Grid>
                                 </Border>
                             </Grid>

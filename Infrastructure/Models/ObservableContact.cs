@@ -1,11 +1,9 @@
 ﻿
 using CommunityToolkit.Mvvm.ComponentModel;
 using Infrastructure.Interfaces;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 
 namespace Infrastructure.Models;
-internal class ObservableContact : ObservableObject, IObservableContact
+public class ObservableContact : ObservableObject, IObservableContact
 {
     public string ID { get; set; } = null!;
 

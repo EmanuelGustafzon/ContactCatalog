@@ -25,11 +25,14 @@ namespace CrossPlatformApplication
             builder.Services.AddSingleton<IRepository<IContact>, ContactRepository>();
             builder.Services.AddSingleton<IContactService, ContactService>();
             builder.Services.AddSingleton<ISearchContactsService, SearchContactsService>();
+            builder.Services.AddSingleton<ContactsCollectionViewModel>();
             builder.Services.AddSingleton<ContactsViewModel>();
             builder.Services.AddSingleton<HomePage>();
             builder.Services.AddSingleton<CreateContact>();
             builder.Services.AddSingleton<SearchContactsViewModel>();
             builder.Services.AddSingleton<SearchContacts>();
+            builder.Services.AddTransient<ContactDetailsViewModel>();
+            builder.Services.AddTransient<ContactDetails>();
 #if DEBUG
             builder.Logging.AddDebug();
 #endif

@@ -47,7 +47,7 @@ public class ContactService : IContactService
             var firstValidationErrorMessage = errors.First().ErrorMessage ?? "";
             return new StatusResponse { StatusCode = (int)StatusCodes.BadRequest, Message = firstValidationErrorMessage };
         }
-        if (GetByID(id) != null) return new StatusResponse { StatusCode = (int)StatusCodes.NotFound, Message = "Contact not found"};
+        if (GetByID(id) == null) return new StatusResponse { StatusCode = (int)StatusCodes.NotFound, Message = "Contact not found"};
         IEnumerable<IContact> allContacts = _contactRepository.Get();
         if (allContacts.Any(item => item.ID != id && item.Name == contact.Name && item.Lastname == contact.Lastname))
             return new StatusResponse

@@ -9,22 +9,12 @@ IFileService fileService = new FileService(@"C:\Users\Emanuel");
 IRepository<IContact> repo = new ContactRepository(jsonService, fileService);
 
 IContactService contactService = new ContactService(repo);
-IContact emanuel = ContactFactory.Create("emanuel", "a", "s@g.s", "0761888619", "e", "e", "2");
-var r = contactService.Add(emanuel);
-Console.WriteLine(r.Message);
 
-foreach (var contact in contactService.GetAll())
-{
-    Console.WriteLine(contact.Name);
-}
+IContact e = ContactFactory.Create("Emanuel", "Gustafzon", "emanuel.g@gmail.com", "092929292", "benvägen 5", "123 78", "Mölndal");
+IObservableContact oe = ContactFactory.CreateObservable(e);
 
-ISearchContactsService search = new SearchContactsService(contactService);
-var searchResult = search.SearchContact("Emanuel");
+Console.WriteLine(oe.Name);
 
-foreach(var contact in searchResult)
-{
-    Console.WriteLine(contact.Name);
-}
 
 
 
