@@ -9,7 +9,7 @@ using System.Diagnostics;
 
 namespace CrossPlatformApplication.ViewModels;
 [QueryProperty("Id", "Id")]
-public partial class ContactDetailsViewModel : ObservableObject
+public partial class EditContactViewModel : ObservableObject
 {
     IContactService _contactService;
     ContactsCollectionViewModel _contactcollectionVm;
@@ -34,7 +34,7 @@ public partial class ContactDetailsViewModel : ObservableObject
     [ObservableProperty]
     string feedback = "";
 
-    public ContactDetailsViewModel(IContactService contactService, ContactsCollectionViewModel contactsCollectionVm)
+    public EditContactViewModel(IContactService contactService, ContactsCollectionViewModel contactsCollectionVm)
     {
         _contactService = contactService;
         _contactcollectionVm = contactsCollectionVm;
@@ -54,6 +54,20 @@ public partial class ContactDetailsViewModel : ObservableObject
         Postcode = contact.Postcode;
         Address = contact.Address;
         City = contact.City;
+    }
+
+    [RelayCommand]
+    public void DeleteContact()
+    {
+        try
+        {
+            _contactService.Delete(Id);
+            IObservableContact? foundContact = Contacts.FirstOrDefault(x => x.ID == Id);
+            if (foundContact != null)
+                Contacts.Remove(foundContact);
+        } catch (Exception ex) {
+            Debug.WriteLine(ex.Message);
+        }
     }
 
     [RelayCommand]

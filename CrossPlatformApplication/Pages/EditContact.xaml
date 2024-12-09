@@ -2,9 +2,9 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:namespaces="clr-namespace:CrossPlatformApplication.ViewModels"
-             x:DataType="namespaces:ContactDetailsViewModel"
-             x:Class="CrossPlatformApplication.Pages.ContactDetails"
-             Title="ContactDetails">
+             x:DataType="namespaces:EditContactViewModel"
+             x:Class="CrossPlatformApplication.Pages.EditContact"
+             Title="Edit Contact">
     <VerticalStackLayout>
         <HorizontalStackLayout>
             <Entry Text="{Binding Firstname}"/>
@@ -19,7 +19,8 @@
             <Entry Text="{Binding Postcode}"/>
             <Entry Text="{Binding City}"/>
         </HorizontalStackLayout>
-        <Button Text="Update Contact" Command="{Binding UpdateContactCommand}"/>
+        <Button Text="Update Contact" Command="{Binding UpdateContactCommand}" BackgroundColor="LightGreen"/>
+        <Button Text="Delete Contact" Command="{Binding DeleteContactCommand}" BackgroundColor="DarkRed"/>
         <Label Text="{Binding Feedback}"/>
     </VerticalStackLayout>
 </ContentPage>

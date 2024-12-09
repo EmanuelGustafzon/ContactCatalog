@@ -2,9 +2,9 @@ using CrossPlatformApplication.ViewModels;
 
 namespace CrossPlatformApplication.Pages;
 
-public partial class ContactDetails : ContentPage
+public partial class EditContact : ContentPage
 {
-	public ContactDetails(ContactDetailsViewModel vm)
+	public EditContact(EditContactViewModel vm)
 	{
 		InitializeComponent();
 		BindingContext = vm;

@@ -7,7 +7,7 @@ namespace CrossPlatformApplication
         public AppShell()
         {
             InitializeComponent();
-            Routing.RegisterRoute(nameof(ContactDetails), typeof(ContactDetails));
+            Routing.RegisterRoute(nameof(EditContact), typeof(EditContact));
         }
     }
 }

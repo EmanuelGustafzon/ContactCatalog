@@ -31,8 +31,8 @@ namespace CrossPlatformApplication
             builder.Services.AddSingleton<CreateContact>();
             builder.Services.AddSingleton<SearchContactsViewModel>();
             builder.Services.AddSingleton<SearchContacts>();
-            builder.Services.AddTransient<ContactDetailsViewModel>();
-            builder.Services.AddTransient<ContactDetails>();
+            builder.Services.AddTransient<EditContactViewModel>();
+            builder.Services.AddTransient<EditContact>();
 #if DEBUG
             builder.Logging.AddDebug();
 #endif

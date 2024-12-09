@@ -87,6 +87,6 @@ public partial class ContactsViewModel : ObservableObject
     [RelayCommand]
     async Task NavigateToDetails(string id)
     {
-        await Shell.Current.GoToAsync($"{nameof(ContactDetails)}?Id={id}");
+        await Shell.Current.GoToAsync($"{nameof(EditContact)}?Id={id}");
     }
 }
