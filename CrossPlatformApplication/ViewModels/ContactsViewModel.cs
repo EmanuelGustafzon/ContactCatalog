@@ -27,14 +27,12 @@ public partial class ContactsViewModel : ObservableObject
         {
             IEnumerable<IContact> allContacts = _contactService.GetAll();
 
-            IEnumerable<IObservableContact>? observableContacts = allContacts.Select(contact => ContactFactory.CreateObservable(contact));
+            IEnumerable<IObservableContact>? observableContacts = allContacts
+                .Select(contact => ContactFactory.CreateObservable(contact))
+                .OrderBy(contact => contact.Name);
             foreach (var contact in observableContacts)
             {
                 Contacts.Add(contact);
-            }
-            foreach(var a in Contacts)
-            {
-                Debug.WriteLine("---",a.Name);
             }
         } catch (Exception ex)
         {

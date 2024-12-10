@@ -2,8 +2,10 @@
 
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CrossPlatformApplication.Pages;
 using Infrastructure.Factories;
 using Infrastructure.Interfaces;
+using Infrastructure.Models;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 
@@ -61,10 +63,18 @@ public partial class EditContactViewModel : ObservableObject
     {
         try
         {
-            _contactService.Delete(Id);
-            IObservableContact? foundContact = Contacts.FirstOrDefault(x => x.ID == Id);
-            if (foundContact != null)
-                Contacts.Remove(foundContact);
+            StatusResponse res = _contactService.Delete(Id);
+            if (res.StatusCode == 200)
+            {
+                var foundContact = Contacts.FirstOrDefault(x => x.ID == Id);
+                if(foundContact != null)
+                    Contacts.Remove(foundContact);
+                Shell.Current.GoToAsync("..");
+                return;
+            }
+
+            Feedback = res.Message;
+                
         } catch (Exception ex) {
             Debug.WriteLine(ex.Message);
         }
@@ -76,16 +86,22 @@ public partial class EditContactViewModel : ObservableObject
         try
         {
             IContact updatedContact = ContactFactory.Create(Firstname, Lastname, Email, Phone, Address, Postcode, City);
-            _contactService.Update(Id, updatedContact);
-            IObservableContact foundContact = Contacts.FirstOrDefault(x => x.ID == Id)!;
-            foundContact.Name = updatedContact.Name;
-            foundContact.Lastname = updatedContact.Lastname;
-            foundContact.Email = updatedContact.Email;
-            foundContact.Phone = updatedContact.Phone;
-            foundContact.Address = updatedContact.Address;
-            foundContact.Postcode = updatedContact.Postcode;
-            foundContact.City = updatedContact.City;
-            Feedback = "Success";
+            StatusResponse res = _contactService.Update(Id, updatedContact);
+            if (res.StatusCode == 200)
+            {
+                IObservableContact foundContact = Contacts.FirstOrDefault(x => x.ID == Id)!;
+                foundContact.Name = updatedContact.Name;
+                foundContact.Lastname = updatedContact.Lastname;
+                foundContact.Email = updatedContact.Email;
+                foundContact.Phone = updatedContact.Phone;
+                foundContact.Address = updatedContact.Address;
+                foundContact.Postcode = updatedContact.Postcode;
+                foundContact.City = updatedContact.City;
+                Shell.Current.GoToAsync("..");
+                return;
+            }
+            
+            Feedback = res.Message;
         } catch (Exception ex)
         {
             Debug.WriteLine(ex.Message);

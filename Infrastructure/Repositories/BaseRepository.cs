@@ -11,7 +11,7 @@ public abstract class BaseRepository<TEntity> : IRepository<TEntity> where TEnti
     IJsonService<TEntity> _jsonService;
     IFileService _fileService;
     string _storageFileName;
-    public BaseRepository(IJsonService<TEntity> jsonService, IFileService fileService, string storageFileName)
+    protected BaseRepository(IJsonService<TEntity> jsonService, IFileService fileService, string storageFileName)
     {
         _jsonService = jsonService;
         _fileService = fileService;

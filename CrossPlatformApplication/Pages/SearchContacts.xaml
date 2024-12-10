@@ -12,12 +12,18 @@
                 <Entry Grid.Column="0" Text="{Binding Searchterm}" Placeholder="Search Contacts"/>
                 <Button Grid.Column="1" Command="{Binding SearchContactsCommand}" Text="Search"/>
             </Grid>
+            <Label 
+                Text="{Binding NoResultFound}"
+                VerticalTextAlignment="Center"
+                HorizontalTextAlignment="Center"
+                FontSize="18"
+                Margin="16"/>
             <CollectionView ItemsSource="{Binding SearchResult}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="models:Contact">
                         <Grid Padding="8">
-                            <Border BackgroundColor="WhiteSmoke">
-                                <Grid ColumnDefinitions=".8*,.2*">
+                            <Border BackgroundColor="GhostWhite">
+                                <Grid ColumnDefinitions=".85*,.15*">
                                     <VerticalStackLayout Padding="24">
                                         <HorizontalStackLayout Spacing="24">
                                             <Label Text="{Binding Name}"/>
@@ -35,7 +41,7 @@
                                     </VerticalStackLayout>
                                     <Button Grid.Column="1" 
                                         Text="Edit Contact" 
-                                        BackgroundColor="CadetBlue"
+                                        BackgroundColor="SteelBlue"
                                         Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:SearchContactsViewModel}}, Path=NavigateToDetailsCommand}"
                                         CommandParameter="{Binding ID}"/>
                                 </Grid>

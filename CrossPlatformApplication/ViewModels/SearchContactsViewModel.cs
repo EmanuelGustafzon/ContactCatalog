@@ -3,7 +3,6 @@ using CommunityToolkit.Mvvm.Input;
 using CrossPlatformApplication.Pages;
 using Infrastructure.Interfaces;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 
 namespace CrossPlatformApplication.ViewModels;
 
@@ -15,8 +14,12 @@ public partial class SearchContactsViewModel : ObservableObject
         _searchContactsService = searchContactsService;
     }
     public ObservableCollection<IContact> SearchResult { get; set; } = [];
+
     [ObservableProperty]
     public string searchterm = "";
+
+    [ObservableProperty]
+    public string noResultFound = "";
 
     [RelayCommand]
     public void SearchContacts()
@@ -25,11 +28,14 @@ public partial class SearchContactsViewModel : ObservableObject
         IEnumerable<IContact>? list = _searchContactsService.SearchContact(Searchterm);
         if (list != null && list.Any())
         {
+            NoResultFound = "";
             foreach (var contact in list)
             {
                 SearchResult.Add(contact);
-                Debug.WriteLine(contact.Name);
             }
+        } else
+        {
+            NoResultFound = $"Sorry, No Results found similar to {Searchterm}";
         }
     }
     [RelayCommand]

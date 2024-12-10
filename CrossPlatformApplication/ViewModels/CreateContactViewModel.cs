@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using Infrastructure.Factories;
 using Infrastructure.Interfaces;
+using Infrastructure.Models;
 using System.Collections.ObjectModel;
 
 namespace CrossPlatformApplication.ViewModels;
@@ -48,9 +49,16 @@ public partial class CreateContactViewModel : ObservableObject
             Postcode,
             City
             );
-            _contactService.Add(contact);
-            Contacts.Add(ContactFactory.CreateObservable(contact));
-            Feedback = "Success";
+            StatusResponse res =  _contactService.Add(contact);
+            if(res.StatusCode == 200)
+            {
+                Contacts.Add(ContactFactory.CreateObservable(contact));
+                Shell.Current.GoToAsync("..");
+            } else
+            {
+                Feedback = res.Message;
+            }
+            
         }
         catch (Exception ex)
         {

@@ -3,7 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using Infrastructure.Interfaces;
 
 namespace Infrastructure.Models;
-public class ObservableContact : ObservableObject, IObservableContact
+internal class ObservableContact : ObservableObject, IObservableContact
 {
     public string ID { get; set; } = null!;
 

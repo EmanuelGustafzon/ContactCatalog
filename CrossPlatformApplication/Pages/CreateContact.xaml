@@ -5,47 +5,59 @@
              x:DataType="viewmodels:CreateContactViewModel"
              x:Class="CrossPlatformApplication.Pages.CreateContact"
              Title="Create Contact">
-    <VerticalStackLayout>
-        <Label 
-            Text="Add a new contact!"
+    <ScrollView>
+        <VerticalStackLayout 
+            Spacing="12"
             VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-        <Entry 
-            Text="{Binding Firstname}"
-            Placeholder="Firstname"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-        <Entry 
-            Text="{Binding Lastname}"
-            Placeholder="LastName"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-        <Entry 
-            Text="{Binding Email}"
-            Placeholder="Email"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-        <Entry 
-            Text="{Binding Phone}"
-            Placeholder="Phone Number"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-        <Entry 
-            Text="{Binding Address}"
-            Placeholder="Address"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-        <Entry 
-            Text="{Binding Postcode}"
-            Placeholder="Postcode"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-        <Entry 
-            Text="{Binding City}"
-            Placeholder="City"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-        <Button Text="Add Contact" Command="{Binding AddContactCommand}"/>
-        <Label Text="{Binding Feedback}"/>
-    </VerticalStackLayout>
+            HorizontalOptions="Center">
+            <Label Text="FirstName" />
+            <Entry 
+                BackgroundColor="GhostWhite"
+                WidthRequest="500"
+                Text="{Binding Firstname}"
+                Placeholder="Firstname"/>
+            <Label Text="Lastname" />
+            <Entry 
+                BackgroundColor="GhostWhite"
+                WidthRequest="500"
+                Text="{Binding Lastname}"
+                Placeholder="LastName"/>
+            <Label Text="Email" />
+            <Entry 
+                BackgroundColor="GhostWhite"
+                WidthRequest="500"
+                Text="{Binding Email}"
+                Placeholder="Email"/>
+            <Label Text="Phone number" />
+            <Entry 
+                BackgroundColor="GhostWhite"
+                WidthRequest="500"
+                Text="{Binding Phone}"
+                Placeholder="Phone Number"/>
+            <Label Text="Address" />
+            <Entry 
+                BackgroundColor="GhostWhite"
+                WidthRequest="500"
+                Text="{Binding Address}"
+                Placeholder="Address"/>
+            <Label Text="Postcode" />
+            <Entry 
+                BackgroundColor="GhostWhite"
+                WidthRequest="500"
+                Text="{Binding Postcode}"
+                Placeholder="Postcode"/>
+            <Label Text="City" />
+            <Entry 
+                BackgroundColor="GhostWhite"
+                WidthRequest="500"
+                Text="{Binding City}"
+                Placeholder="City"/>
+            <Button BackgroundColor="DarkSeaGreen" WidthRequest="500" Text="Add Contact" Command="{Binding AddContactCommand}"/>
+            <Label 
+                TextColor="IndianRed"
+                Text="{Binding Feedback}" 
+                FontSize="18"
+                VerticalTextAlignment="Center"/>
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

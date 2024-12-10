@@ -4,20 +4,21 @@
              xmlns:viewmodels="clr-namespace:CrossPlatformApplication.ViewModels"
              x:Class="CrossPlatformApplication.Pages.HomePage"
              Title="Home">
+
     <ScrollView>
-        <VerticalStackLayout >
+        <VerticalStackLayout>
             <Label 
                 FontSize="Title"
                 Text="View All Your Contacts"
                 VerticalOptions="Center" 
                 HorizontalOptions="Center" />
-                <CollectionView ItemsSource="{Binding Contacts}" SelectionMode="None">
+                <CollectionView ItemsSource="{Binding Contacts}">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Grid Padding="8">
-                                <Border BackgroundColor="WhiteSmoke">
-                                    <Grid ColumnDefinitions=".7*,.2*">
-                                        <VerticalStackLayout Padding="24">
+                            <Border BackgroundColor="GhostWhite">
+                                    <Grid ColumnDefinitions=".85*,.15*">
+                                    <VerticalStackLayout Padding="24">
                                             <HorizontalStackLayout Spacing="24">
                                                 <Label Text="{Binding Name}"/>
                                                 <Label Text="{Binding Lastname}"/>
@@ -34,7 +35,7 @@
                                         </VerticalStackLayout>
                                         <Button Grid.Column="1" 
                                                 Text="Edit Contact" 
-                                                BackgroundColor="CadetBlue"
+                                                BackgroundColor="SteelBlue"
                                                 Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:ContactsViewModel}}, Path=NavigateToDetailsCommand}"
                                                 CommandParameter="{Binding ID}"/>
                                     </Grid>

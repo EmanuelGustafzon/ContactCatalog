@@ -83,9 +83,9 @@ namespace Tests
 
             IContactService contactService = new ContactService(mockDataProvider.Object);
 
-            int result = contactService.Delete(contact.ID);
+            StatusResponse result = contactService.Delete(contact.ID);
 
-            Assert.Equal((int)StatusCodes.OK, result);
+            Assert.Equal((int)StatusCodes.OK, result.StatusCode);
      
         }
         [Fact]
@@ -98,27 +98,27 @@ namespace Tests
 
             IContactService contactService = new ContactService(mockDataProvider.Object);
 
-            int result = contactService.Delete("None_existing_ID");
+            StatusResponse result = contactService.Delete("None_existing_ID");
 
-            Assert.Equal((int)StatusCodes.NotFound, result);
+            Assert.Equal((int)StatusCodes.NotFound, result.StatusCode);
 
         }
         [Fact]
         public void UpdateShould_UpdateContact_IfNotLeadingToDuplicate()
         {
             IContact contact1 = ContactFactory.Create("Emanuel", "lastname", "e@d.s", "0761888619", "address", "postcode", "city");
+            IContact contactduplicate1 = ContactFactory.Create("Emanuel", "lastname", "e@d.s", "0761888619", "address", "postcode", "city");
             IContact contact2 = ContactFactory.Create("Erik", "lastname", "e@d.s", "0761888619", "address", "postcode", "city");
-            IContact contact3 = ContactFactory.Create("Elsa", "lastname", "e@d.s", "0761888619", "address", "postcode", "city");
             sampleData.Add(contact1);
-            sampleData.Add(contact2);
 
+            mockDataProvider.Setup(dp => dp.Get(contact1.ID)).Returns(contact1);
             mockDataProvider.Setup(dp => dp.Get()).Returns(sampleData);
             mockDataProvider.Setup(dp => dp.Update(It.IsAny<string>(), It.IsAny<IContact>())).Returns(true);
 
             IContactService contactService = new ContactService(mockDataProvider.Object);
 
-            StatusResponse resultDuplicate = contactService.Update(contact1.ID, contact2);
-            StatusResponse resultNotDuplicate = contactService.Update(contact1.ID, contact3);
+            StatusResponse resultDuplicate = contactService.Update(contact1.ID, contactduplicate1);
+            StatusResponse resultNotDuplicate = contactService.Update(contact1.ID, contact2);
             StatusResponse resultNoNameChange = contactService.Update(contact1.ID, contact1);
 
             Assert.Equal((int)StatusCodes.Duplicate, (int)resultDuplicate.StatusCode);
