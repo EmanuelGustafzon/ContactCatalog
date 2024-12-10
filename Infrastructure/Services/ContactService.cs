@@ -50,11 +50,6 @@ public class ContactService : IContactService
         }
 
         if (_contactRepository.Get(id) == null) return new StatusResponse { StatusCode = (int)StatusCodes.NotFound, Message = "Contact not found"};
-       
-        if (_contactRepository.Get().Any(item => item.ID != id && item.Name == contact.Name && item.Lastname == contact.Lastname))
-        {
-            return new StatusResponse { StatusCode = (int)StatusCodes.Duplicate, Message = "Contact already exist" };
-        }
 
         bool result = _contactRepository.Update(id, contact);
 

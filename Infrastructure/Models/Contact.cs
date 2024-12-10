@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace Infrastructure.Models;
-public class Contact : IContact
+internal class Contact : IContact
 {
     public string ID { get; set; } = Guid.NewGuid().ToString();
 

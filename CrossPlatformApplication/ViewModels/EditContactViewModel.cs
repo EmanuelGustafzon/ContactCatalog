@@ -59,7 +59,7 @@ public partial class EditContactViewModel : ObservableObject
     }
 
     [RelayCommand]
-    public void DeleteContact()
+    public async void DeleteContact()
     {
         try
         {

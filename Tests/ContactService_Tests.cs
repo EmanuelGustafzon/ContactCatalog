@@ -106,24 +106,28 @@ namespace Tests
         [Fact]
         public void UpdateShould_UpdateContact_IfNotLeadingToDuplicate()
         {
-            IContact contact1 = ContactFactory.Create("Emanuel", "lastname", "e@d.s", "0761888619", "address", "postcode", "city");
-            IContact contactduplicate1 = ContactFactory.Create("Emanuel", "lastname", "e@d.s", "0761888619", "address", "postcode", "city");
-            IContact contact2 = ContactFactory.Create("Erik", "lastname", "e@d.s", "0761888619", "address", "postcode", "city");
-            sampleData.Add(contact1);
+            IContact validContact1 = ContactFactory.Create("Emanuel", "lastname", "w@s.s", "0704445529", "address", "postcode", "city");
+            IContact validContact2 = ContactFactory.Create("Erik", "lastname", "w@s.s", "0704445529", "address", "postcode", "city");
+            IContact invalidName = ContactFactory.Create("", "lastname", "w@s.s", "0704445529", "address", "postcode", "city");
+            IContact invalidEmail = ContactFactory.Create("e", "lastname", "email", "0704445529", "address", "postcode", "city");
+            IContact invalidPhone = ContactFactory.Create("e", "lastname", "ss@.s", "070y", "address", "postcode", "city");
 
-            mockDataProvider.Setup(dp => dp.Get(contact1.ID)).Returns(contact1);
-            mockDataProvider.Setup(dp => dp.Get()).Returns(sampleData);
+            mockDataProvider.Setup(dp => dp.Get(validContact1.ID)).Returns(validContact1);
             mockDataProvider.Setup(dp => dp.Update(It.IsAny<string>(), It.IsAny<IContact>())).Returns(true);
 
             IContactService contactService = new ContactService(mockDataProvider.Object);
 
-            StatusResponse resultDuplicate = contactService.Update(contact1.ID, contactduplicate1);
-            StatusResponse resultNotDuplicate = contactService.Update(contact1.ID, contact2);
-            StatusResponse resultNoNameChange = contactService.Update(contact1.ID, contact1);
+            StatusResponse resultOk = contactService.Update(validContact1.ID, validContact2);
 
-            Assert.Equal((int)StatusCodes.Duplicate, (int)resultDuplicate.StatusCode);
-            Assert.Equal((int)StatusCodes.OK, (int)resultNotDuplicate.StatusCode);
-            Assert.Equal((int)StatusCodes.OK, (int)resultNoNameChange.StatusCode);
+            StatusResponse nameValidation = contactService.Update(validContact1.ID, invalidName);
+            StatusResponse emailValidation = contactService.Update(validContact1.ID, invalidEmail);
+            StatusResponse phoneValidation = contactService.Update(validContact1.ID, invalidPhone);
+
+            Assert.Equal((int)StatusCodes.OK, (int)resultOk.StatusCode);
+
+            Assert.Equal((int)StatusCodes.BadRequest, (int)nameValidation.StatusCode);
+            Assert.Equal((int)StatusCodes.BadRequest, (int)emailValidation.StatusCode);
+            Assert.Equal((int)StatusCodes.BadRequest, (int)phoneValidation.StatusCode);
         }
     }
 }

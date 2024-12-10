@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CrossPlatformApplication.Pages;
 using Infrastructure.Factories;
 using Infrastructure.Interfaces;
 using Infrastructure.Models;
@@ -36,7 +37,7 @@ public partial class CreateContactViewModel : ObservableObject
     }
 
     [RelayCommand]
-    public void AddContact()
+    public async Task AddContact()
     {
         try
         {
@@ -50,19 +51,24 @@ public partial class CreateContactViewModel : ObservableObject
             City
             );
             StatusResponse res =  _contactService.Add(contact);
-            if(res.StatusCode == 200)
+            if(res.StatusCode == 201)
             {
                 Contacts.Add(ContactFactory.CreateObservable(contact));
-                Shell.Current.GoToAsync("..");
-            } else
-            {
-                Feedback = res.Message;
-            }
-            
+                await ReDirectHome();
+                return;
+            } 
+                
+            Feedback = res.Message;
+
         }
         catch (Exception ex)
         {
             Feedback = ex.Message;
         }
+    }
+
+    async Task ReDirectHome()
+    {
+        await Shell.Current.GoToAsync("//HomePage");
     }
 }

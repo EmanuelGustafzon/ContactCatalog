@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodels="clr-namespace:CrossPlatformApplication.ViewModels"
              x:DataType="viewmodels:SearchContactsViewModel"
-             xmlns:models="clr-namespace:Infrastructure.Models;assembly=Infrastructure"
              x:Class="CrossPlatformApplication.Pages.SearchContacts"
              Title="Search Contacts">
     <ScrollView>
@@ -20,7 +19,7 @@
                 Margin="16"/>
             <CollectionView ItemsSource="{Binding SearchResult}">
                 <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="models:Contact">
+                    <DataTemplate x:DataType="viewmodels:ContactViewModel">
                         <Grid Padding="8">
                             <Border BackgroundColor="GhostWhite">
                                 <Grid ColumnDefinitions=".85*,.15*">

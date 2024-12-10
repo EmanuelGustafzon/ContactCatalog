@@ -13,7 +13,7 @@ public partial class SearchContactsViewModel : ObservableObject
     {
         _searchContactsService = searchContactsService;
     }
-    public ObservableCollection<IContact> SearchResult { get; set; } = [];
+    public ObservableCollection<ContactViewModel> SearchResult { get; set; } = [];
 
     [ObservableProperty]
     public string searchterm = "";
@@ -31,7 +31,7 @@ public partial class SearchContactsViewModel : ObservableObject
             NoResultFound = "";
             foreach (var contact in list)
             {
-                SearchResult.Add(contact);
+                SearchResult.Add(new ContactViewModel(contact));
             }
         } else
         {
@@ -42,5 +42,7 @@ public partial class SearchContactsViewModel : ObservableObject
     async Task NavigateToDetails(string id)
     {
         await Shell.Current.GoToAsync($"{nameof(EditContact)}?Id={id}");
+        Searchterm = "";
+        SearchResult.Clear();
     }
 }
