@@ -20,8 +20,7 @@ namespace CrossPlatformApplication
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
             builder.Services.AddSingleton<IJsonService<IContact>, JsonService<IContact>>();
-            builder.Services.AddSingleton<IFileService, FileService>(
-                provider => new FileService(@"C:\Users\Emanuel"));
+            builder.Services.AddSingleton<IFileService>(new FileService(FileSystem.AppDataDirectory));
             builder.Services.AddSingleton<IRepository<IContact>, ContactRepository>();
             builder.Services.AddSingleton<IContactService, ContactService>();
             builder.Services.AddSingleton<ISearchContactsService, SearchContactsService>();

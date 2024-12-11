@@ -43,7 +43,8 @@ public abstract class BaseRepository<TEntity> : IRepository<TEntity> where TEnti
         try
         {
             var json = _jsonService.Serialize(Entities);
-            _fileService.WriteFile(json, _storageFileName);
+            bool result = _fileService.WriteFile(json, _storageFileName);
+            if (result == false) return false;
             return true;
         }
         catch (Exception ex)
@@ -58,14 +59,13 @@ public abstract class BaseRepository<TEntity> : IRepository<TEntity> where TEnti
         {
             var json = _fileService.ReadFile(_storageFileName);
             List<TEntity>? items = _jsonService.Deserialize(json);
-            if (items == null)
+            if (items == null || !items.Any())
             {
                 return false;
             }
-            foreach (var item in items)
-            {
-                Entities.Add(item);
-            }
+            
+            Entities.AddRange(items);
+
             return true;
         }
         catch (Exception ex)

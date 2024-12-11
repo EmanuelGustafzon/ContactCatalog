@@ -32,8 +32,6 @@ namespace Tests
             Assert.Single(list);
             Assert.Equal("Emanuel", list.First().Name);
             Assert.IsAssignableFrom<IContact>(list.First());
-
-
         }
     }
 }

@@ -26,7 +26,6 @@ public class ContactRepository : BaseRepository<IContact>
             return false;
         }
     }
-
     public override IContact? Get(string id)
     {
         IContact? foundContact = Entities.FirstOrDefault(x => x.ID == id);

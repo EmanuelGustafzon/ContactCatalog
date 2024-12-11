@@ -4,24 +4,31 @@ using Infrastructure.Services;
 using Infrastructure.Models.Enums;
 using Moq;
 using Infrastructure.Models;
+using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace Tests
 {
     public class ContactService_Tests
     {
-        Mock<IRepository<IContact>> mockDataProvider = new();
-        List<IContact> sampleData = [];
+        Mock<IRepository<IContact>> _mockDataProvider = new();
+        IContactService _contactService;
+        List<IContact> _sampleData = [];
+
+        public ContactService_Tests()
+        {
+            _contactService = new ContactService(_mockDataProvider.Object);
+        }
 
         [Fact]
         public void GetAll_ShouldReturnListOfTypeIContactEntity()
         {
             IContact contact = ContactFactory.Create("Emanuel", "lastname", "e.d@g.d", "0761888619", "address", "postcode", "city");
 
-            sampleData.Add(contact);
-            mockDataProvider.Setup(dp => dp.Get()).Returns(sampleData);
-
-            IContactService contactService = new ContactService(mockDataProvider.Object);
-            var list = contactService.GetAll();
+            _sampleData.Add(contact);
+            _mockDataProvider.Setup(dp => dp.Get()).Returns(_sampleData);
+            
+            var list = _contactService.GetAll();
 
             Assert.Single(list);
         }
@@ -30,13 +37,11 @@ namespace Tests
         {
             IContact contact = ContactFactory.Create("Emanuel", "lastname", "e.d@g.d", "0761888619", "address", "postcode", "city");
             string id = contact.ID;
-            sampleData.Add(contact);
+            _sampleData.Add(contact);
 
-            mockDataProvider.Setup(dp => dp.Get(id)).Returns(contact);
+            _mockDataProvider.Setup(dp => dp.Get(id)).Returns(contact);
 
-            IContactService contactService = new ContactService(mockDataProvider.Object);
-
-            IContact? foundContact = contactService.GetByID(id);
+            IContact? foundContact = _contactService.GetByID(id);
 
             Assert.NotNull(foundContact);
             Assert.IsAssignableFrom<IContact>(contact);
@@ -50,19 +55,17 @@ namespace Tests
             IContact invalidEmail = ContactFactory.Create("e", "lastname", "email", "0704445529", "address", "postcode", "city");
             IContact invalidPhone = ContactFactory.Create("e", "lastname", "ss@.s", "070y", "address", "postcode", "city");
 
-            sampleData.Add(validContact1);
+            _sampleData.Add(validContact1);
 
-            mockDataProvider.Setup(dp => dp.Get()).Returns(sampleData);
-            mockDataProvider.Setup(dp => dp.Add(It.IsAny<IContact>())).Returns(true);
+            _mockDataProvider.Setup(dp => dp.Get()).Returns(_sampleData);
+            _mockDataProvider.Setup(dp => dp.Add(It.IsAny<IContact>())).Returns(true);
 
-            IContactService contactService = new ContactService(mockDataProvider.Object);
+            StatusResponse resultDuplicate = _contactService.Add(validContact1);
+            StatusResponse resultNotDuplicate = _contactService.Add(validContact2);
 
-            StatusResponse resultDuplicate = contactService.Add(validContact1);
-            StatusResponse resultNotDuplicate = contactService.Add(validContact2);
-
-            StatusResponse nameValidation = contactService.Add(invalidName);
-            StatusResponse emailValidation = contactService.Add(invalidEmail);
-            StatusResponse phoneValidation = contactService.Add(invalidPhone);
+            StatusResponse nameValidation = _contactService.Add(invalidName);
+            StatusResponse emailValidation = _contactService.Add(invalidEmail);
+            StatusResponse phoneValidation = _contactService.Add(invalidPhone);
 
             Assert.Equal((int)StatusCodes.Duplicate ,(int)resultDuplicate.StatusCode);
             Assert.Equal((int)StatusCodes.Created ,(int)resultNotDuplicate.StatusCode);
@@ -76,14 +79,12 @@ namespace Tests
         public void DeleteShould_ReturnOKStatusCode_IfContactIsFound()
         {
             IContact contact = ContactFactory.Create("Emanuel", "lastname", "email", "phone", "address", "postcode", "city");
-            sampleData.Add(contact);
+            _sampleData.Add(contact);
 
-            mockDataProvider.Setup(dp => dp.Get(contact.ID)).Returns(contact);
-            mockDataProvider.Setup(dp => dp.Delete(contact.ID)).Returns(true);
+            _mockDataProvider.Setup(dp => dp.Get(contact.ID)).Returns(contact);
+            _mockDataProvider.Setup(dp => dp.Delete(contact.ID)).Returns(true);
 
-            IContactService contactService = new ContactService(mockDataProvider.Object);
-
-            StatusResponse result = contactService.Delete(contact.ID);
+            StatusResponse result = _contactService.Delete(contact.ID);
 
             Assert.Equal((int)StatusCodes.OK, result.StatusCode);
      
@@ -92,19 +93,17 @@ namespace Tests
         public void DeleteShould_ReturnBadRequestStatusCode_IfContactIsNotFound()
         {
             IContact contact = ContactFactory.Create("Emanuel", "lastname", "email", "phone", "address", "postcode", "city");
-            sampleData.Add(contact);
+            _sampleData.Add(contact);
 
-            mockDataProvider.Setup(dp => dp.Get("None_existing_ID")).Returns((IContact)null!);
+            _mockDataProvider.Setup(dp => dp.Get("None_existing_ID")).Returns((IContact)null!);
 
-            IContactService contactService = new ContactService(mockDataProvider.Object);
-
-            StatusResponse result = contactService.Delete("None_existing_ID");
+            StatusResponse result = _contactService.Delete("None_existing_ID");
 
             Assert.Equal((int)StatusCodes.NotFound, result.StatusCode);
 
         }
         [Fact]
-        public void UpdateShould_UpdateContact_IfNotLeadingToDuplicate()
+        public void UpdateShould_ValidateAndUpdateContact()
         {
             IContact validContact1 = ContactFactory.Create("Emanuel", "lastname", "w@s.s", "0704445529", "address", "postcode", "city");
             IContact validContact2 = ContactFactory.Create("Erik", "lastname", "w@s.s", "0704445529", "address", "postcode", "city");
@@ -112,22 +111,33 @@ namespace Tests
             IContact invalidEmail = ContactFactory.Create("e", "lastname", "email", "0704445529", "address", "postcode", "city");
             IContact invalidPhone = ContactFactory.Create("e", "lastname", "ss@.s", "070y", "address", "postcode", "city");
 
-            mockDataProvider.Setup(dp => dp.Get(validContact1.ID)).Returns(validContact1);
-            mockDataProvider.Setup(dp => dp.Update(It.IsAny<string>(), It.IsAny<IContact>())).Returns(true);
+            _mockDataProvider.Setup(dp => dp.Get(validContact1.ID)).Returns(validContact1);
+            _mockDataProvider.Setup(dp => dp.Update(It.IsAny<string>(), It.IsAny<IContact>())).Returns(true);
 
-            IContactService contactService = new ContactService(mockDataProvider.Object);
+            StatusResponse resultOk = _contactService.Update(validContact1.ID, validContact2);
 
-            StatusResponse resultOk = contactService.Update(validContact1.ID, validContact2);
-
-            StatusResponse nameValidation = contactService.Update(validContact1.ID, invalidName);
-            StatusResponse emailValidation = contactService.Update(validContact1.ID, invalidEmail);
-            StatusResponse phoneValidation = contactService.Update(validContact1.ID, invalidPhone);
+            StatusResponse nameValidation = _contactService.Update(validContact1.ID, invalidName);
+            StatusResponse emailValidation = _contactService.Update(validContact1.ID, invalidEmail);
+            StatusResponse phoneValidation = _contactService.Update(validContact1.ID, invalidPhone);
 
             Assert.Equal((int)StatusCodes.OK, (int)resultOk.StatusCode);
 
             Assert.Equal((int)StatusCodes.BadRequest, (int)nameValidation.StatusCode);
             Assert.Equal((int)StatusCodes.BadRequest, (int)emailValidation.StatusCode);
             Assert.Equal((int)StatusCodes.BadRequest, (int)phoneValidation.StatusCode);
+        }
+        [Fact]
+        public void ValidateContactShould_ValidateAllDataAnnotations()
+        {
+            IContact validContact = ContactFactory.Create("Emanuel", "lastname", "w@s.s", "0704445529", "address", "postcode", "city");
+            IContact invalidContact = ContactFactory.Create("", "lastname", "w@", "h", "address", "postcode", "city");
+
+            List<ValidationResult>? validResult = _contactService.ValidateContact(validContact);
+            List<ValidationResult>? invalidResult = _contactService.ValidateContact(invalidContact);
+
+            Assert.Null(validResult);
+            Assert.Equal(3, invalidResult?.Count());
+            Assert.NotEmpty(invalidResult);
         }
     }
 }

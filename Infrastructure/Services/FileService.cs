@@ -24,31 +24,18 @@ public class FileService : IFileService
             return "";
         }
     }
-
-    public void WriteFile(string content, string fileName)
+    public bool WriteFile(string content, string fileName)
     {
         try
         {
             using StreamWriter outputFile = new StreamWriter(Path.Combine(_defaultFilePath, fileName));
             outputFile.WriteLine(content);
+            return true;
         }
         catch (IOException e)
         {
-            Console.WriteLine("Could not write to file:");
             Console.WriteLine(e.Message);
-        }
-    }
-    public void WriteFile(string content, string customFilePath, string fileName)
-    {
-        try
-        {
-            using StreamWriter outputFile = new StreamWriter(Path.Combine(customFilePath, fileName));
-            outputFile.WriteLine(content);
-        }
-        catch (IOException e)
-        {
-            Console.WriteLine("Could not write to file:");
-            Console.WriteLine(e.Message);
+            return false;
         }
     }
     public bool FileExist(string fileName)

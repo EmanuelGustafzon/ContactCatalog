@@ -12,19 +12,24 @@ public partial class ContactsViewModel : ObservableObject
 {
     IContactService _contactService;
     ContactsCollectionViewModel _contactsCollectionVm;
+    IJsonService<IContact> _jsonService;
     public ObservableCollection<IObservableContact> Contacts => _contactsCollectionVm.Contacts;
 
-    public ContactsViewModel(IContactService contactService, ContactsCollectionViewModel contactsCollectionVm)
+    public ContactsViewModel(IContactService contactService, ContactsCollectionViewModel contactsCollectionVm, IJsonService<IContact> jsonService)
     {
         _contactService = contactService;
         _contactsCollectionVm = contactsCollectionVm;
+        _jsonService = jsonService;
         GetAllContacts(); 
     }
 
-    public void GetAllContacts()
+    public async Task GetAllContacts()
     {
         try
         {
+            if(!_contactService.GetAll().Any()) 
+                await AddDefaultContactsFromMauiAsset();
+
             IEnumerable<IContact> allContacts = _contactService.GetAll();
 
             IEnumerable<IObservableContact>? observableContacts = allContacts
@@ -38,6 +43,15 @@ public partial class ContactsViewModel : ObservableObject
         {
             Debug.WriteLine(ex.Message);
         }
+    }
+    async Task AddDefaultContactsFromMauiAsset()
+    {
+        using var stream = await FileSystem.OpenAppPackageFileAsync("DefaultContacts.json");
+        using var reader = new StreamReader(stream);
+
+        var jsonContacts = reader.ReadToEnd();
+        List<IContact>? contacts = _jsonService.Deserialize(jsonContacts);
+        contacts?.ForEach(contact => _contactService.Add(contact));
     }
 
     [RelayCommand]

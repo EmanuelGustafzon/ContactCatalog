@@ -8,7 +8,7 @@ namespace Tests
     public class SearchContacts_Tests
     {
         [Fact]
-        public void SearchContactShould_ReturnEnumerableOfMostSimilarresult()
+        public void SearchContactShould_ReturnEnumerableOfMostSimilarContacts()
         {
             Mock<IContactService> mockDataProvider = new();
             List<IContact> sampleData = [];
