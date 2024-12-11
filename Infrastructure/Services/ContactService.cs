@@ -24,7 +24,7 @@ public class ContactService : IContactService
     }
     public StatusResponse Add(IContact contact)
     {
-        List<ValidationResult>? errors = validateModel(contact);
+        List<ValidationResult>? errors = ValidateContact(contact);
         if (errors != null)
         {
             var firstValidationErrorMessage = errors.First().ErrorMessage ?? "";
@@ -42,7 +42,7 @@ public class ContactService : IContactService
     }
     public StatusResponse Update(string id, IContact contact)
     {
-        List<ValidationResult>? errors = validateModel(contact);
+        List<ValidationResult>? errors = ValidateContact(contact);
         if (errors != null)
         {
             var firstValidationErrorMessage = errors.First().ErrorMessage ?? "";
@@ -66,7 +66,7 @@ public class ContactService : IContactService
 
         return new StatusResponse { StatusCode = (int)StatusCodes.OK, Message="The contact was successfully removed" };
     }
-    private List<ValidationResult>? validateModel(IContact contact)
+    public List<ValidationResult>? ValidateContact(IContact contact)
     {
         var validationResults = new List<ValidationResult>();
         var validationContext = new ValidationContext(contact);

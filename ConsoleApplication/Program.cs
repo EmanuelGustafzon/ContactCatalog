@@ -1,19 +1,27 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿using ConsoleApplication.Interfaces;
+using ConsoleApplication.Services;
 using Infrastructure.Factories;
 using Infrastructure.Interfaces;
 using Infrastructure.Repositories;
 using Infrastructure.Services;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
-IJsonService<IContact> jsonService = new JsonService<IContact>();
-IFileService fileService = new FileService(@"C:\Users\Emanuel");
-IRepository<IContact> repo = new ContactRepository(jsonService, fileService);
+var host = Host.CreateDefaultBuilder()
+    .ConfigureServices(services =>
+    {
+        services.AddSingleton<IJsonService<IContact>, JsonService<IContact>>();
+        services.AddSingleton<IFileService>(new FileService(filePath: "Data"));
+        services.AddSingleton<IRepository<IContact>, ContactRepository>();
+        services.AddSingleton<IContactService, ContactService>();
+        services.AddSingleton<IMenu, MenuService>();
+    }).Build();
 
-IContactService contactService = new ContactService(repo);
+IMenu menu = host.Services.GetRequiredService<IMenu>();
 
-IContact e = ContactFactory.Create("Emanuel", "Gustafzon", "emanuel.g@gmail.com", "092929292", "benvägen 5", "123 78", "Mölndal");
-IObservableContact oe = ContactFactory.CreateObservable(e);
+menu.ViewMenu();
 
-Console.WriteLine(oe.Name);
+
 
 
 
