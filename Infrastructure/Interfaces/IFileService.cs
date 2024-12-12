@@ -1,7 +1,5 @@
 ﻿namespace Infrastructure.Interfaces;
-public interface IFileService
+public interface IFileService : IFileReader, IFileWriter
 {
-    string ReadFile(string fileName);
-    bool WriteFile(string content, string fileName);
     public bool FileExist(string fileName);
 }

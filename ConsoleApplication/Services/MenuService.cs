@@ -2,9 +2,8 @@
 using ConsoleApplication.Interfaces;
 using Infrastructure.Factories;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel;
-using System.Reflection;
 using Infrastructure.Models;
+using System.Reflection;
 
 namespace ConsoleApplication.Services;
 
@@ -81,12 +80,11 @@ internal class MenuService : IMenu
                 var contactType = contact.GetType();
                 foreach(var member in result.MemberNames)
                 {
-                    var propertyValue = contactType.GetProperty(member);
+                    var propertyInfo = contactType.GetProperty(member);
                     Console.WriteLine(result.ErrorMessage);
-                    Console.WriteLine($"Enter Contact {String.Join(", ", member)}");
+                    Console.WriteLine($"Enter Contact {member}");
                     string input = Console.ReadLine()!;
-                    propertyValue?.SetValue(contact, input);
-
+                    propertyInfo?.SetValue(contact, input);
                 }
             } 
         } while (invalidResult != null);

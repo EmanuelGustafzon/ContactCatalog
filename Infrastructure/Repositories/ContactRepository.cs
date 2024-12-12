@@ -4,8 +4,8 @@ namespace Infrastructure.Repositories;
 
 public class ContactRepository : BaseRepository<IContact>
 {
-    public ContactRepository(IJsonService<IContact> jsonService, IFileService fileService)
-        : base(jsonService, fileService, "Contacts.json") 
+    public ContactRepository(IJsonService<IContact> jsonService, IFileService fileService, string fileName = "Contacts.json")
+        : base(jsonService, fileService, fileName) 
     {
         PopulateListFromFile();
     }

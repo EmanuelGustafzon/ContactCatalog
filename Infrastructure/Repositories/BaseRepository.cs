@@ -36,8 +36,11 @@ public abstract class BaseRepository<TEntity> : IRepository<TEntity> where TEnti
         return Entities;
     }
     public abstract TEntity? Get(string id);
+
     public abstract bool Delete(string id);
+
     public abstract bool Update(string id, TEntity entity);
+
     public bool SaveChanges()
     {
         try
@@ -59,12 +62,7 @@ public abstract class BaseRepository<TEntity> : IRepository<TEntity> where TEnti
         {
             var json = _fileService.ReadFile(_storageFileName);
             List<TEntity>? items = _jsonService.Deserialize(json);
-            if (items == null || !items.Any())
-            {
-                return false;
-            }
-            
-            Entities.AddRange(items);
+            Entities = items ?? [];
 
             return true;
         }

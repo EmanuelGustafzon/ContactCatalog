@@ -1,0 +1,29 @@
+{
+  "$id": "1",
+  "$values": [
+    {
+      "$id": "2",
+      "$type": "Contact",
+      "ID": "ca40c1c3-ad86-4bd6-8888-8c61179dff66",
+      "Name": "General Emergency Number",
+      "Lastname": "SOS Sweden",
+      "Email": "info@sosalarm.se",
+      "Phone": "112",
+      "Address": "Sveavagen 145",
+      "Postcode": "114 87",
+      "City": "Stockholm"
+    },
+    {
+      "$id": "3",
+      "$type": "Contact",
+      "ID": "4636e9b8-5a4f-416e-99db-2d6a2bb0fb4f",
+      "Name": "Police",
+      "Lastname": "None Emergency Assistance",
+      "Email": "info@polisen.se",
+      "Phone": "114 14",
+      "Address": "Polhemsgatan 30",
+      "Postcode": "112 92",
+      "City": "Stockholm"
+    }
+  ]
+}

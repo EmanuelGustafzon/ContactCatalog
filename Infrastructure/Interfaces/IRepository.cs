@@ -9,5 +9,4 @@ public interface IRepository<TEntity> where TEntity : class
     public bool Delete(string id);
     public bool Update(string id, TEntity entity);
     public bool SaveChanges();
-    public bool PopulateListFromFile();
 }
