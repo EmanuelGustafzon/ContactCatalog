@@ -21,7 +21,7 @@
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="viewmodels:ContactViewModel">
                         <Grid Padding="8">
-                            <Border BackgroundColor="GhostWhite">
+                            <Border>
                                 <Grid ColumnDefinitions=".85*,.15*">
                                     <VerticalStackLayout Padding="24">
                                         <HorizontalStackLayout Spacing="24">
@@ -40,9 +40,8 @@
                                     </VerticalStackLayout>
                                     <Button Grid.Column="1" 
                                         Text="Edit Contact" 
-                                        BackgroundColor="SteelBlue"
                                         Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:SearchContactsViewModel}}, Path=NavigateToDetailsCommand}"
-                                        CommandParameter="{Binding ID}"/>
+                                        CommandParameter="{Binding ID}" AutomationProperties.IsInAccessibleTree="False"/>
                                 </Grid>
                             </Border>
                         </Grid>

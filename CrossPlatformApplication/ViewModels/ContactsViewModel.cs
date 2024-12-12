@@ -20,7 +20,7 @@ public partial class ContactsViewModel : ObservableObject
         _contactService = contactService;
         _contactsCollectionVm = contactsCollectionVm;
         _jsonService = jsonService;
-        GetAllContacts(); 
+        _ = GetAllContacts();
     }
 
     public async Task GetAllContacts()
