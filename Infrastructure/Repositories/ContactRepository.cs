@@ -5,9 +5,19 @@ namespace Infrastructure.Repositories;
 public class ContactRepository : BaseRepository<IContact>
 {
     public ContactRepository(IJsonService<IContact> jsonService, IFileService fileService, string fileName = "Contacts.json")
-        : base(jsonService, fileService, fileName) 
+        : base(jsonService, fileService, fileName) { }
+
+    public override bool Add(IContact entity)
     {
-        PopulateListFromFile();
+        if (!Entities.Any())
+            PopulateListFromFile();
+        return base.Add(entity);
+    }
+    public override IEnumerable<IContact> Get()
+    {
+        if (!Entities.Any())
+            PopulateListFromFile();
+        return base.Get();
     }
     public override bool Delete(string id)
     {

@@ -78,8 +78,8 @@ public class ContactRepository_Tests
 
         bool result = _contactRepo.PopulateListFromFile();
         Assert.True(result);
-        _mockFileServcie.Verify(x => x.ReadFile(It.IsAny<string>()), Times.Exactly(2));
-        _mockJsonServcie.Verify(x => x.Deserialize(It.IsAny<string>()), Times.Exactly(2));
+        _mockFileServcie.Verify(x => x.ReadFile(It.IsAny<string>()), Times.Once);
+        _mockJsonServcie.Verify(x => x.Deserialize(It.IsAny<string>()), Times.Once);
     }
     [Fact]
     public void SaveChangesShould_SerilizeAndSaveListToFile()

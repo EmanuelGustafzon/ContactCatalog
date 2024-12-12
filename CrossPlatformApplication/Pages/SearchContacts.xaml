@@ -7,7 +7,7 @@
              Title="Search Contacts">
     <ScrollView>
         <VerticalStackLayout>
-            <Grid ColumnDefinitions=".75*, .25*">
+            <Grid ColumnDefinitions=".75*, .25*" Margin="20">
                 <Entry Grid.Column="0" Text="{Binding Searchterm}" Placeholder="Search Contacts"/>
                 <Button Grid.Column="1" Command="{Binding SearchContactsCommand}" Text="Search"/>
             </Grid>
