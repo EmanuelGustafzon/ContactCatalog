@@ -9,45 +9,39 @@
         <VerticalStackLayout 
             Spacing="12"
             VerticalOptions="Center" 
-            HorizontalOptions="Center" >
+            Margin="50"
+            HorizontalOptions="Fill" >
             <Label Text="FirstName" />
             <Entry 
-                WidthRequest="500"
                 Text="{Binding Firstname}"
                 Placeholder="Firstname"/>
             <Label Text="Lastname" />
             <Entry 
-                WidthRequest="500"
                 Text="{Binding Lastname}"
                 Placeholder="LastName"/>
             <Label Text="Email" />
             <Entry 
-                WidthRequest="500"
                 Text="{Binding Email}"
                 Placeholder="Email" />
             <Label Text="Phone number" />
             <Entry 
-                WidthRequest="500"
                 Text="{Binding Phone}"
                 Placeholder="Phone Number" />
             <Label Text="Address" />
             <Entry 
-                WidthRequest="500"
                 Text="{Binding Address}"
                 Placeholder="Address"/>
             <Label Text="Postcode" />
             <Entry 
-                WidthRequest="500"
                 Text="{Binding Postcode}"
                 Placeholder="Postcode"/>
             <Label Text="City" />
             <Entry 
-                WidthRequest="500"
                 Text="{Binding City}"
                 Placeholder="City"/>
             <Label VerticalTextAlignment="Center" TextColor="IndianRed" Text="{Binding Feedback}"/>
-            <Button WidthRequest="500" Text="Update Contact" Command="{Binding UpdateContactCommand}"/>
-            <Button WidthRequest="500" Text="Delete Contact" Command="{Binding DeleteContactCommand}" BackgroundColor="IndianRed"/>
+            <Button Text="Update Contact" Command="{Binding UpdateContactCommand}"/>
+            <Button Text="Delete Contact" Command="{Binding DeleteContactCommand}" BackgroundColor="IndianRed"/>
             
         </VerticalStackLayout>
     </ScrollView>

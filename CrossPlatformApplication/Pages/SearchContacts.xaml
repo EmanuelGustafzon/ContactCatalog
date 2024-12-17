@@ -6,7 +6,9 @@
              x:Class="CrossPlatformApplication.Pages.SearchContacts"
              Title="Search Contacts">
     <ScrollView>
-        <VerticalStackLayout>
+        <VerticalStackLayout
+            HorizontalOptions="Fill"
+            Margin="8">
             <Grid ColumnDefinitions=".75*, .25*" Margin="20">
                 <Entry Grid.Column="0" Text="{Binding Searchterm}" Placeholder="Search Contacts"/>
                 <Button Grid.Column="1" Command="{Binding SearchContactsCommand}" Text="Search"/>
@@ -22,17 +24,17 @@
                     <DataTemplate x:DataType="viewmodels:ContactViewModel">
                         <Grid Padding="8">
                             <Border>
-                                <Grid ColumnDefinitions=".85*,.15*">
-                                    <VerticalStackLayout Padding="24">
-                                        <HorizontalStackLayout Spacing="24">
-                                            <Label Text="{Binding Name}"/>
-                                            <Label Text="{Binding Lastname}"/>
+                                <Grid ColumnDefinitions=".8*,.2*">
+                                    <VerticalStackLayout Padding="8">
+                                        <HorizontalStackLayout Spacing="18">
+                                            <Label FontAttributes="Bold" Text="{Binding Name}"/>
+                                            <Label FontAttributes="Bold" Text="{Binding Lastname}"/>
                                         </HorizontalStackLayout>
-                                        <HorizontalStackLayout Spacing="24">
+                                        <HorizontalStackLayout Spacing="18">
                                             <Label Text="{Binding Phone}"/>
                                             <Label Text="{Binding Email}"/>
                                         </HorizontalStackLayout>
-                                        <HorizontalStackLayout Spacing="24">
+                                        <HorizontalStackLayout Spacing="18">
                                             <Label Text="{Binding Address}"/>
                                             <Label Text="{Binding Postcode}"/>
                                             <Label Text="{Binding City}"/>
