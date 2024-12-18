@@ -4,6 +4,7 @@ using Infrastructure.Factories;
 using System.ComponentModel.DataAnnotations;
 using Infrastructure.Models;
 using System.Reflection;
+using Infrastructure.Services;
 
 namespace ConsoleApplication.Services;
 
@@ -73,8 +74,8 @@ internal class MenuService : IMenu
         List<ValidationResult>? invalidResult;
         do
         {
-            invalidResult = _contactService.ValidateContact(contact);
-            if (invalidResult == null) break;
+            invalidResult = ValidateModelService.Validate<IContact>(contact);
+            if (!invalidResult.Any()) break;
             foreach (var result in invalidResult)
             {
                 var contactType = contact.GetType();

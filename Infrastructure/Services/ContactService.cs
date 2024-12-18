@@ -24,8 +24,8 @@ public class ContactService : IContactService
     }
     public StatusResponse Add(IContact contact)
     {
-        List<ValidationResult>? errors = ValidateContact(contact);
-        if (errors != null)
+        List<ValidationResult> errors = ValidateModelService.Validate<IContact>(contact);
+        if (errors.Any())
         {
             var firstValidationErrorMessage = errors.First().ErrorMessage ?? "";
             return new StatusResponse { StatusCode = (int)StatusCodes.BadRequest, Message = firstValidationErrorMessage };
@@ -42,8 +42,8 @@ public class ContactService : IContactService
     }
     public StatusResponse Update(string id, IContact contact)
     {
-        List<ValidationResult>? errors = ValidateContact(contact);
-        if (errors != null)
+        List<ValidationResult> errors = ValidateModelService.Validate<IContact>(contact);
+        if (errors.Any())
         {
             var firstValidationErrorMessage = errors.First().ErrorMessage ?? "";
             return new StatusResponse { StatusCode = (int)StatusCodes.BadRequest, Message = firstValidationErrorMessage };
@@ -65,14 +65,5 @@ public class ContactService : IContactService
         if(result == false) return new StatusResponse { StatusCode = (int)StatusCodes.InternalError, Message = "Could not delete contact, please try again" };
 
         return new StatusResponse { StatusCode = (int)StatusCodes.OK, Message="The contact was successfully removed" };
-    }
-    public List<ValidationResult>? ValidateContact(IContact contact)
-    {
-        var validationResults = new List<ValidationResult>();
-        var validationContext = new ValidationContext(contact);
-        bool isValid = Validator.TryValidateObject(contact, validationContext, validationResults, true);
-
-        if (isValid == false) return validationResults;
-        return null;
     }
 }

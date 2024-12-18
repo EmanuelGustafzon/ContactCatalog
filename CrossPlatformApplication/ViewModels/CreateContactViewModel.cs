@@ -55,6 +55,7 @@ public partial class CreateContactViewModel : ObservableObject
             {
                 Contacts.Add(ContactFactory.CreateObservable(contact));
                 await ReDirectHome();
+                ResetProps();
                 return;
             } 
                 
@@ -65,6 +66,18 @@ public partial class CreateContactViewModel : ObservableObject
         {
             Feedback = ex.Message;
         }
+    }
+
+    void ResetProps()
+    {
+        Firstname = string.Empty;
+        Lastname = string.Empty;
+        Email = string.Empty;
+        Phone = string.Empty;
+        Address = string.Empty;
+        Postcode = string.Empty;
+        City = string.Empty;
+        Feedback = string.Empty;
     }
 
     async Task ReDirectHome()

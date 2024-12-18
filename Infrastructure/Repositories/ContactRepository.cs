@@ -9,13 +9,13 @@ public class ContactRepository : BaseRepository<IContact>
 
     public override bool Add(IContact entity)
     {
-        if (!Entities.Any())
+        if (Entities.Count == 0)
             PopulateListFromFile();
         return base.Add(entity);
     }
     public override IEnumerable<IContact> Get()
     {
-        if (!Entities.Any())
+        if (Entities.Count == 0)
             PopulateListFromFile();
         return base.Get();
     }

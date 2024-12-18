@@ -126,18 +126,5 @@ namespace Tests
             Assert.Equal((int)StatusCodes.BadRequest, (int)emailValidation.StatusCode);
             Assert.Equal((int)StatusCodes.BadRequest, (int)phoneValidation.StatusCode);
         }
-        [Fact]
-        public void ValidateContactShould_ValidateAllDataAnnotations()
-        {
-            IContact validContact = ContactFactory.Create("Emanuel", "lastname", "w@s.s", "0704445529", "address", "postcode", "city");
-            IContact invalidContact = ContactFactory.Create("", "lastname", "w@", "h", "address", "postcode", "city");
-
-            List<ValidationResult>? validResult = _contactService.ValidateContact(validContact);
-            List<ValidationResult>? invalidResult = _contactService.ValidateContact(invalidContact);
-
-            Assert.Null(validResult);
-            Assert.Equal(3, invalidResult?.Count());
-            Assert.NotEmpty(invalidResult);
-        }
     }
 }
