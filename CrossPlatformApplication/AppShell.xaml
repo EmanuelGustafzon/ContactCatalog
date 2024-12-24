@@ -19,6 +19,12 @@
         Title="Search Contacts"
         ContentTemplate="{DataTemplate pages:SearchContacts}"
         Route="SearchContacts" />
-
-
+    
+    <Shell.FlyoutFooter>
+        <StackLayout Padding="20, 0, 0, 50">
+            <Label Text="Theme" FontSize="12"/>
+            <Switch Toggled="Switch_Toggled"/>
+        </StackLayout>
+    </Shell.FlyoutFooter>
+    
 </Shell>

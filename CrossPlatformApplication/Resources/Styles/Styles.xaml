@@ -15,8 +15,12 @@
 
     <Style TargetType="Border">
         <Setter Property="Stroke" Value="{AppThemeBinding Light={StaticResource Gray100}, Dark={StaticResource Gray500}}" />
-        <Setter Property="StrokeShape" Value="Rectangle"/>
         <Setter Property="StrokeThickness" Value="1"/>
+        <Setter Property="StrokeShape">
+            <Setter.Value>
+                <RoundRectangle CornerRadius="8" />
+            </Setter.Value>
+        </Setter>
     </Style>
 
     <Style TargetType="BoxView">
@@ -185,14 +189,14 @@
     </Style>
 
     <Style TargetType="Label" x:Key="Headline">
-        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource MidnightBlue}, Dark={StaticResource White}}" />
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource MidnightGreen}, Dark={StaticResource White}}" />
         <Setter Property="FontSize" Value="32" />
         <Setter Property="HorizontalOptions" Value="Center" />
         <Setter Property="HorizontalTextAlignment" Value="Center" />
     </Style>
 
     <Style TargetType="Label" x:Key="SubHeadline">
-        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource MidnightBlue}, Dark={StaticResource White}}" />
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource MidnightGreen}, Dark={StaticResource White}}" />
         <Setter Property="FontSize" Value="24" />
         <Setter Property="HorizontalOptions" Value="Center" />
         <Setter Property="HorizontalTextAlignment" Value="Center" />
@@ -358,13 +362,13 @@
                     </VisualState>
                     <VisualState x:Name="On">
                         <VisualState.Setters>
-                            <Setter Property="OnColor" Value="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Gray200}}" />
-                            <Setter Property="ThumbColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}" />
+                            <Setter Property="OnColor" Value="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource PrimaryDark}}" />
+                            <Setter Property="ThumbColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Gray900}}" />
                         </VisualState.Setters>
                     </VisualState>
                     <VisualState x:Name="Off">
                         <VisualState.Setters>
-                            <Setter Property="ThumbColor" Value="{AppThemeBinding Light={StaticResource Gray400}, Dark={StaticResource Gray500}}" />
+                            <Setter Property="ThumbColor" Value="{AppThemeBinding Light={StaticResource Gray900}, Dark={StaticResource Gray500}}" />
                         </VisualState.Setters>
                     </VisualState>
                 </VisualStateGroup>
@@ -392,7 +396,7 @@
             </VisualStateGroupList>
         </Setter>
     </Style>
-  
+
     <!--
     <Style TargetType="TitleBar">
         <Setter Property="MinimumHeightRequest" Value="32"/>

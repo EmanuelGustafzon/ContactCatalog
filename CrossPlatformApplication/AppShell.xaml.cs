@@ -9,5 +9,19 @@ namespace CrossPlatformApplication
             InitializeComponent();
             Routing.RegisterRoute(nameof(EditContact), typeof(EditContact));
         }
+
+        private void Switch_Toggled(object sender, ToggledEventArgs e)
+        {
+            if (Application.Current == null) return;
+            if (e.Value == true)
+            {
+                Application.Current.UserAppTheme = AppTheme.Dark;
+            }
+            else
+            {
+                Application.Current.UserAppTheme = AppTheme.Light;
+            }
+        }
     }
 }
+
