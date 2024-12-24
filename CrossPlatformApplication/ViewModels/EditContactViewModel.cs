@@ -1,8 +1,5 @@
-﻿
-
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CrossPlatformApplication.Pages;
 using Infrastructure.Factories;
 using Infrastructure.Interfaces;
 using Infrastructure.Models;

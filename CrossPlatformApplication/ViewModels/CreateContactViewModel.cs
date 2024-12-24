@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CrossPlatformApplication.Pages;
 using Infrastructure.Factories;
 using Infrastructure.Interfaces;
 using Infrastructure.Models;
@@ -16,20 +15,9 @@ public partial class CreateContactViewModel : ObservableObject
 
     [ObservableProperty]
     string feedback = "";
+
     [ObservableProperty]
-    string firstname = "";
-    [ObservableProperty]
-    string lastname = "";
-    [ObservableProperty]
-    string email = "";
-    [ObservableProperty]
-    string phone = "";
-    [ObservableProperty]
-    string address = "";
-    [ObservableProperty]
-    string postcode = "";
-    [ObservableProperty]
-    string city = "";
+    IContact contactForm = ContactFactory.Create();
     public CreateContactViewModel(IContactService contactService, ContactsCollectionViewModel contactCollectionVm)
     {
         _contactService = contactService;
@@ -41,21 +29,12 @@ public partial class CreateContactViewModel : ObservableObject
     {
         try
         {
-            IContact contact = ContactFactory.Create(
-            Firstname,
-            Lastname,
-            Email,
-            Phone,
-            Address,
-            Postcode,
-            City
-            );
-            StatusResponse res =  _contactService.Add(contact);
+            StatusResponse res =  _contactService.Add(ContactForm);
             if(res.StatusCode == 201)
             {
-                Contacts.Add(ContactFactory.CreateObservable(contact));
+                Contacts.Add(ContactFactory.CreateObservable(ContactForm));
                 await ReDirectHome();
-                ResetProps();
+                ContactForm = ContactFactory.Create();
                 return;
             } 
                 
@@ -67,19 +46,6 @@ public partial class CreateContactViewModel : ObservableObject
             Feedback = ex.Message;
         }
     }
-
-    void ResetProps()
-    {
-        Firstname = string.Empty;
-        Lastname = string.Empty;
-        Email = string.Empty;
-        Phone = string.Empty;
-        Address = string.Empty;
-        Postcode = string.Empty;
-        City = string.Empty;
-        Feedback = string.Empty;
-    }
-
     async Task ReDirectHome()
     {
         await Shell.Current.GoToAsync("//HomePage");
