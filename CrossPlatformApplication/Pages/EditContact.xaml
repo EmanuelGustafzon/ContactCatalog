@@ -11,31 +11,31 @@
             VerticalOptions="Center" 
             Margin="50"
             HorizontalOptions="Fill" >
-            <Label Text="FirstName" />
+            <Label Text="FirstName" Margin="5, 0,0,0"/>
             <Entry 
                 Text="{Binding Firstname}"
                 Placeholder="Firstname"/>
-            <Label Text="Lastname" />
+            <Label Text="Lastname" Margin="5, 0,0,0"/>
             <Entry 
                 Text="{Binding Lastname}"
                 Placeholder="LastName"/>
-            <Label Text="Email" />
+            <Label Text="Email" Margin="5, 0,0,0"/>
             <Entry 
                 Text="{Binding Email}"
                 Placeholder="Email" />
-            <Label Text="Phone number" />
+            <Label Text="Phone number" Margin="5, 0,0,0"/>
             <Entry 
                 Text="{Binding Phone}"
-                Placeholder="Phone Number" />
-            <Label Text="Address" />
+                Placeholder="Phone Number" Margin="5, 0,0,0"/>
+            <Label Text="Address" Margin="5, 0,0,0"/>
             <Entry 
                 Text="{Binding Address}"
                 Placeholder="Address"/>
-            <Label Text="Postcode" />
+            <Label Text="Postcode" Margin="5, 0,0,0"/>
             <Entry 
                 Text="{Binding Postcode}"
                 Placeholder="Postcode"/>
-            <Label Text="City" />
+            <Label Text="City" Margin="5, 0,0,0"/>
             <Entry 
                 Text="{Binding City}"
                 Placeholder="City"/>
