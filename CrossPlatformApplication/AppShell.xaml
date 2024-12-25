@@ -21,10 +21,10 @@
         Route="SearchContacts" />
     
     <Shell.FlyoutFooter>
-        <StackLayout Padding="20, 0, 0, 50">
-            <Label Text="Theme" FontSize="12"/>
-            <Switch Toggled="Switch_Toggled"/>
-        </StackLayout>
+        <Grid ColumnDefinitions="Auto, Auto" VerticalOptions="Start" Margin="20,0,0,50" ColumnSpacing="100">
+            <Label Text="Theme" FontSize="16" Margin="0,0,0,60"/>
+            <Switch Toggled="Switch_Toggled" />
+        </Grid>
     </Shell.FlyoutFooter>
     
 </Shell>

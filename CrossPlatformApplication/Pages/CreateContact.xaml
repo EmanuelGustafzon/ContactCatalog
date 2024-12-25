@@ -45,7 +45,6 @@
                 FontSize="18"
                 VerticalTextAlignment="Center"/>
             <Button Text="Add Contact" Command="{Binding AddContactCommand}"/>
-            
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>
