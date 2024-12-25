@@ -13,31 +13,31 @@
             HorizontalOptions="Fill">
             <Label Text="FirstName" />
             <Entry 
-                Text="{Binding ContactForm.Firstname}"
+                Text="{Binding Firstname}"
                 Placeholder="Firstname"/>
             <Label Text="Lastname" />
             <Entry 
-                Text="{Binding ContactForm.Lastname}"
+                Text="{Binding Lastname}"
                 Placeholder="LastName"/>
             <Label Text="Email" />
             <Entry 
-                Text="{Binding ContactForm.Email}"
+                Text="{Binding Email}"
                 Placeholder="Email"/>
             <Label Text="Phone number" />
             <Entry 
-                Text="{Binding ContactForm.Phone}"
+                Text="{Binding Phone}"
                 Placeholder="Phone Number"/>
             <Label Text="Address" />
             <Entry 
-                Text="{Binding ContactForm.Address}"
+                Text="{Binding Address}"
                 Placeholder="Address"/>
             <Label Text="Postcode" />
             <Entry 
-                Text="{Binding ContactForm.Postcode}"
+                Text="{Binding Postcode}"
                 Placeholder="Postcode"/>
             <Label Text="City" />
             <Entry 
-                Text="{Binding ContactForm.City}"
+                Text="{Binding City}"
                 Placeholder="City"/>
             <Label 
                 TextColor="IndianRed"

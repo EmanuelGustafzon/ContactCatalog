@@ -2,8 +2,6 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodels="clr-namespace:CrossPlatformApplication.ViewModels"
-             x:DataType="viewmodels:ContactsViewModel"
-             xmlns:models="clr-namespace:Infrastructure.Models;assembly=Infrastructure"
              x:Class="CrossPlatformApplication.Pages.HomePage"
              Title="Contacts">
 
@@ -13,7 +11,7 @@
                 HorizontalOptions="Fill" >
             <CollectionView ItemsSource="{Binding Contacts}">
                     <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="models:ObservableContact">
+                        <DataTemplate>
                             <Grid Padding="8">
                             <Border>
                                     <Grid ColumnDefinitions=".8*,.2*">
