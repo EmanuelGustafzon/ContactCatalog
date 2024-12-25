@@ -11,31 +11,31 @@
             Margin="50"
             VerticalOptions="Center" 
             HorizontalOptions="Fill">
-            <Label Text="FirstName" Margin="5, 0,0,0"/>
+            <Label Text="FirstName" />
             <Entry 
                 Text="{Binding ContactForm.Firstname}"
                 Placeholder="Firstname"/>
-            <Label Text="Lastname" Margin="5, 0,0,0"/>
+            <Label Text="Lastname" />
             <Entry 
                 Text="{Binding ContactForm.Lastname}"
                 Placeholder="LastName"/>
-            <Label Text="Email" Margin="5, 0,0,0"/>
+            <Label Text="Email" />
             <Entry 
                 Text="{Binding ContactForm.Email}"
                 Placeholder="Email"/>
-            <Label Text="Phone number" Margin="5, 0,0,0"/>
+            <Label Text="Phone number" />
             <Entry 
                 Text="{Binding ContactForm.Phone}"
                 Placeholder="Phone Number"/>
-            <Label Text="Address" Margin="5, 0,0,0"/>
+            <Label Text="Address" />
             <Entry 
                 Text="{Binding ContactForm.Address}"
                 Placeholder="Address"/>
-            <Label Text="Postcode" Margin="5, 0,0,0"/>
+            <Label Text="Postcode" />
             <Entry 
                 Text="{Binding ContactForm.Postcode}"
                 Placeholder="Postcode"/>
-            <Label Text="City" Margin="5, 0,0,0"/>
+            <Label Text="City" />
             <Entry 
                 Text="{Binding ContactForm.City}"
                 Placeholder="City"/>
