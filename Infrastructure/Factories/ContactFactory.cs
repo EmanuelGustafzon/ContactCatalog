@@ -7,9 +7,11 @@ public static class ContactFactory
 {
     public static IContact Create()
     {
-        IContact contact = new Contact();
-        contact.ID = GenerateUniqueID.Generate();
-        return new Contact();
+        IContact contact = new Contact
+        {
+            ID = GenerateUniqueID.Generate()
+        };
+        return contact;
     }
     public static IContact Create(string name, string lastname, string email, string phone, string address, string postcode, string city)
     {

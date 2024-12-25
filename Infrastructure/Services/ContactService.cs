@@ -25,7 +25,7 @@ public class ContactService : IContactService
     public StatusResponse Add(IContact contact)
     {
         List<ValidationResult> errors = ValidateModelService.Validate<IContact>(contact);
-        if (errors.Any())
+        if (errors.Count != 0)
         {
             var firstValidationErrorMessage = errors.First().ErrorMessage ?? "";
             return new StatusResponse { StatusCode = (int)StatusCodes.BadRequest, Message = firstValidationErrorMessage };
@@ -43,7 +43,7 @@ public class ContactService : IContactService
     public StatusResponse Update(string id, IContact contact)
     {
         List<ValidationResult> errors = ValidateModelService.Validate<IContact>(contact);
-        if (errors.Any())
+        if (errors.Count != 0)
         {
             var firstValidationErrorMessage = errors.First().ErrorMessage ?? "";
             return new StatusResponse { StatusCode = (int)StatusCodes.BadRequest, Message = firstValidationErrorMessage };
