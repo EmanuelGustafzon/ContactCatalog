@@ -59,7 +59,7 @@ public partial class EditContactViewModel : ObservableObject
     }
 
     [RelayCommand]
-    public void DeleteContact()
+    public async Task DeleteContact()
     {
         try
         {
@@ -69,19 +69,20 @@ public partial class EditContactViewModel : ObservableObject
                 var foundContact = Contacts.FirstOrDefault(x => x.ID == Id);
                 if(foundContact != null)
                     Contacts.Remove(foundContact);
-                Shell.Current.GoToAsync("..");
+                await Shell.Current.GoToAsync("..");
                 return;
             }
 
             Feedback = res.Message;
                 
         } catch (Exception ex) {
+            Feedback = ex.Message;
             Debug.WriteLine(ex.Message);
         }
     }
 
     [RelayCommand]
-    public void UpdateContact()
+    public async Task UpdateContact()
     {
         try
         {
@@ -97,15 +98,15 @@ public partial class EditContactViewModel : ObservableObject
                 foundContact.Address = updatedContact.Address;
                 foundContact.Postcode = updatedContact.Postcode;
                 foundContact.City = updatedContact.City;
-                Shell.Current.GoToAsync("..");
+                await Shell.Current.GoToAsync("..");
                 return;
             }
             
             Feedback = res.Message;
         } catch (Exception ex)
         {
+            Feedback = ex.Message;
             Debug.WriteLine(ex.Message);
-            Feedback = "Fail";
         }
         
     }
