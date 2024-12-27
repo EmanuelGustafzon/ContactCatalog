@@ -13,6 +13,7 @@
                 <Entry Grid.Column="0" Text="{Binding Searchterm}" Placeholder="Search Contacts"/>
                 <Button Grid.Column="1" Command="{Binding SearchContactsCommand}" Text="Search"/>
             </Grid>
+            <ActivityIndicator IsRunning="{Binding Loading}" IsVisible="{Binding Loading}"/> 
             <Label 
                 Text="{Binding NoResultFound}"
                 VerticalTextAlignment="Center"

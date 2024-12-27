@@ -21,9 +21,13 @@ public partial class SearchContactsViewModel : ObservableObject
     [ObservableProperty]
     public string noResultFound = "";
 
+    [ObservableProperty]
+    public bool loading = false;
+
     [RelayCommand]
     public void SearchContacts()
     {
+        Loading = true;
         SearchResult.Clear();
         IEnumerable<IContact>? list = _searchContactsService.SearchContact(Searchterm);
         if (list != null && list.Any())
@@ -37,6 +41,7 @@ public partial class SearchContactsViewModel : ObservableObject
         {
             NoResultFound = $"Sorry, No Results found similar to {Searchterm}";
         }
+        Loading = false;
     }
     [RelayCommand]
     async Task NavigateToDetails(string id)

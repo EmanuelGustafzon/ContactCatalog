@@ -16,8 +16,8 @@ namespace CrossPlatformApplication
                 .UseMauiApp<App>()
                 .ConfigureFonts(fonts =>
                 {
-                    fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-                    fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+                    fonts.AddFont("Manrope-Bold.ttf", "ManropeBold");
+                    fonts.AddFont("Manrope-Regular.ttf", "ManropeRegular");
                 });
             builder.Services.AddSingleton<IJsonService<IContact>, JsonService<IContact>>();
             builder.Services.AddSingleton<IFileService>(new FileService(FileSystem.AppDataDirectory));

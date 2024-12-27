@@ -9,6 +9,7 @@ public class ContactFactory_Tests
     {
         IContact contact = ContactFactory.Create();
         Assert.NotNull(contact);
+        Assert.NotNull(contact.ID);
         Assert.IsAssignableFrom<IContact>(contact);
     }
     [Fact]
