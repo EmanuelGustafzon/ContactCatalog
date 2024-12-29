@@ -1,4 +1,5 @@
 ﻿using Infrastructure.Interfaces;
+using System.Diagnostics;
 
 namespace Infrastructure.Services;
 public class FileService : IFileService
@@ -20,7 +21,7 @@ public class FileService : IFileService
         }
         catch (IOException e)
         {
-            Console.WriteLine(e.Message);
+            Debug.WriteLine(e.Message);
             return "";
         }
     }
@@ -34,7 +35,7 @@ public class FileService : IFileService
         }
         catch (IOException e)
         {
-            Console.WriteLine(e.Message);
+            Debug.WriteLine(e.Message);
             return false;
         }
     }
